@@ -1,0 +1,20 @@
+1. Bulk-Funktionen, mit denen Sie mehrere AD-Benutzer gleichzeitig aktualisieren können
+
+    1a. Erstellen/Deaktivieren der AD-Accounts für alle Lernenden des BZT Frauenfeld gemäss XML File
+    1b. Erstellen/Löschen der dazugehörigen AD-Gruppen pro Klasse
+
+
+2. Sicherheitsrelevante Funktionen, welche sich auf einen spezifischen AD-Benutzer beziehen
+
+    2a. Sicherheitstechnisch wichtige Informationen der AD-Benutzer täglich (Zeitpunkt frei wählbar) protokollieren, wie:
+        Passwortalter
+        Datum der letzten Anmeldung
+        Anzahl der Logins
+    2b. Für einzelne AD-Benutzer:
+        Konto entsperren
+        Konto aktivieren
+        Passwort neu setzen
+    2c. Übersicht über alle AD-Benutzer:
+        für welche kein Passwort gesetzt ist
+        Passwort läuft nie ab
+        deaktivierte/gesperrte AD-Benutzer
