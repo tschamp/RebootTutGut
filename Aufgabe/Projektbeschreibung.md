@@ -1,7 +1,7 @@
 1. Bulk-Funktionen, mit denen Sie mehrere AD-Benutzer gleichzeitig aktualisieren können
 
-    - Erstellen/Deaktivieren der AD-Accounts für alle Lernenden des BZT Frauenfeld gemäss XML File
-    - Erstellen/Löschen der dazugehörigen AD-Gruppen pro Klasse
+    a) Erstellen/Deaktivieren der AD-Accounts für alle Lernenden des BZT Frauenfeld gemäss XML File
+    b) Erstellen/Löschen der dazugehörigen AD-Gruppen pro Klasse
 
 
 2. Sicherheitsrelevante Funktionen, welche sich auf einen spezifischen AD-Benutzer beziehen
