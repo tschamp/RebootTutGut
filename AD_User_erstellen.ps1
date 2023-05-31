@@ -1,5 +1,11 @@
-#Geben Sie den Pfad zur Import-CSV-Datei ein.
-$ADUsers = Import-csv C:\scripts\newusers.csv
+# Importiere die Config.ini.ps1-Datei
+# config datei fpr die relativen Pfade
+. ".\config.ini.ps1"
+
+
+# Pfad der CSV-Datei mittels config Pfade
+$ADUsers = @($config["SchuelerCsv"])
+
 
 foreach ($User in $ADUsers)
 {
