@@ -1,7 +1,6 @@
-# Ändere die Farbe auf Rot
+# Ändere die Farbe auf Grün
 $Host.UI.RawUI.ForegroundColor = "Green"
 
-# Bulk Funktionen unter Punkt 1a
 
 function AD-User-Erstellen {
      Write-Host "Rufe das AD-User-Erstellungsskript auf..."
@@ -32,6 +31,12 @@ function AD-User-Verwaltung{
     Write-Host "Rufe das AD-User-Verwaltungsskript auf..."
     . "src\2\b_einzelne_AD_User_Verwalten.ps1"
 }
+
+function AD-User-Uebersicht{
+    Write-Host "Rufe das AD-User-Uebersichtskript auf..."
+    . "src\2\c_AD_Uebersicht.ps1"
+}
+ 
  
  
  
@@ -43,7 +48,7 @@ function AD-User-Verwaltung{
  4. AD-Gruppen deaktivieren
  
  Sicherheitsfunktionen:
- 5. technische Informationen der Benutzer
+ 5. technische wichtige Informationen der Benutzer
  6. einzelne User Verwaltung
  7. Übersicht aller AD Benutzer
 
@@ -70,6 +75,10 @@ function AD-User-Verwaltung{
      }
      6 {
         AD-User-Verwaltung
+     }
+
+     7 {
+        AD-User-Übersicht
      }
 
 
