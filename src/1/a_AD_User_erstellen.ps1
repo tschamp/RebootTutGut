@@ -24,6 +24,6 @@ foreach ($obj in $xml.Objs.Obj) {
         Write-Host "Der Benutzer '$benutzername' existiert nicht. Der Account wird erstellt."
         # Benutzer in Active Directory erstellen
         $password = ConvertTo-SecureString -String "Passwort123!" -AsPlainText -Force
-        New-ADUser -SamAccountName $benutzername -Name "$vorname $name" -GivenName $vorname -Surname $name -UserPrincipalName "$benutzername@domain.com" -Enabled $true -PasswordNeverExpires $true -AccountPassword $password -Path "OU=Pfad\zur\OU"
+        New-ADUser -SamAccountName $benutzername -Name "$vorname $name" -GivenName $vorname -Surname $name -UserPrincipalName "$benutzername@domain.com" -Enabled $true -PasswordNeverExpires $true -AccountPassword $password -Path "OU=C:\Windows\NTDS\ntds.dit"
     }
 }
