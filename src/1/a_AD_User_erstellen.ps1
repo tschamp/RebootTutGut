@@ -15,15 +15,19 @@ foreach ($obj in $xml.Objs.Obj) {
     $klasse2 = $obj.MS.S -split ';' | Select-Object -Index 4
 
     # Überprüfen, ob der AD-Account bereits vorhanden ist
-    if (Get-ADUser -Filter "SamAccountName -eq '$benutzername'") {
-        Write-Host "Der Benutzer '$benutzername' existiert bereits. Der Account wird deaktiviert."
-        # Deaktivieren des AD-Accounts
+    if (Get-ADUser -F {SamAccountName -eq $Username})
+    {
+            #If user does exist, output a warning message
+            Write-Warning "Ein Benutzeraccount $benutzername existiert bereits im Active Directory."
+            # Deaktivieren des AD-Accounts
         Set-ADUser -Identity $benutzername -Enabled $false
+    }
+        
     }
     else {
         Write-Host "Der Benutzer '$benutzername' existiert nicht. Der Account wird erstellt."
         # Benutzer in Active Directory erstellen
         $password = ConvertTo-SecureString -String "Passwort123!" -AsPlainText -Force
         New-ADUser -SamAccountName $benutzername -Name "$vorname $name" -GivenName $vorname -Surname $name -UserPrincipalName "$benutzername@domain.com" -Enabled $true -PasswordNeverExpires $true -AccountPassword $password -Path "OU=C:\Windows\NTDS\ntds.dit"
-    }
-}
+   }
+
