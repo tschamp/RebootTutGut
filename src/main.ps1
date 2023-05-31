@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-# Ändere die Farbe auf Grün
 #--------------------------------------------------------------------------------
 # Autor: David Strainovic & Timo Schreiber
 # Funktion des Skripts: Alle Skripts mit Switch-Case zusammenführen und von hier aus 
@@ -9,18 +7,7 @@
 # Bemerkungen: super
 #--------------------------------------------------------------------------------
 
-=======
-#--------------------------------------------------------------------------------
-# Autor: David Strainovic & Timo Schreiber
-# Funktion des Skripts: einzelne User Verwalten im AD
-# Erstellungsdatum: 04.05.2023
-# Version: 1.2
-# Bemerkungen: funktioniert noch nicht so ganz
-#--------------------------------------------------------------------------------
-
-
-# Ändere die Farbe auf Rot
->>>>>>> Stashed changes
+# Ändere die Farbe auf Grün
 $Host.UI.RawUI.ForegroundColor = "Green"
 
 
