@@ -22,6 +22,16 @@ function AD-User-Erstellen {
      Write-Host "Rufe das AD-Gruppen-Deaktivierungsskript auf..."
      . "src\1\b_AD_Gruppen_deaktivieren.ps1"
  }
+
+ function AD-Sicherheitsinformationen{
+    Write-Host "Rufe das AD-Sicherheitsinformationenskript auf..."
+    . "src\2\a_Sicherheitstechnische_Infos.ps1"
+}
+
+function AD-User-Verwaltung{
+    Write-Host "Rufe das AD-User-Verwaltungsskript auf..."
+    . "src\2\b_einzelne_AD_User_Verwalten.ps1"
+}
  
  
  
@@ -29,6 +39,13 @@ function AD-User-Erstellen {
  Bulkfunktionen: 
  1. AD-User erstellen
  2. AD-User deaktivieren
+ 3. AD-Gruppen erstellen
+ 4. AD-Gruppen deaktivieren
+ 
+ Sicherheitsfunktionen:
+ 5. technische Informationen der Benutzer
+ 6. einzelne User Verwaltung
+ 7. Übersicht aller AD Benutzer
 
 
  "
@@ -47,8 +64,17 @@ function AD-User-Erstellen {
      4 {
           AD-Gruppen-Deaktivieren
      }
+     5 {
+        AD-Sicherheitsinformationen
+
+     }
+     6 {
+        AD-User-Verwaltung
+     }
+
+
      default {
-         Write-Host "Ungültige Auswahl."
+         Write-Error "Ungültige Auswahl."
      }
  }
  
