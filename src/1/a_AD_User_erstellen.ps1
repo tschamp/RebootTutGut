@@ -15,7 +15,7 @@ foreach ($obj in $xml.Objs.Obj) {
     $klasse2 = $obj.MS.S -split ';' | Select-Object -Index 4
 
     # Überprüfen, ob der AD-Account bereits vorhanden ist
-    if (Get-ADUser -F {SamAccountName -eq $Username})
+    if (Get-ADUser -Fitler {SamAccountName -eq $Username})
     {
             #If user does exist, output a warning message
             Write-Warning "Ein Benutzeraccount $benutzername existiert bereits im Active Directory."
@@ -28,6 +28,6 @@ foreach ($obj in $xml.Objs.Obj) {
         Write-Host "Der Benutzer '$benutzername' existiert nicht. Der Account wird erstellt."
         # Benutzer in Active Directory erstellen
         $password = ConvertTo-SecureString -String "Passwort123!" -AsPlainText -Force
-        New-ADUser -SamAccountName $benutzername -Name "$vorname $name" -GivenName $vorname -Surname $name -UserPrincipalName "$benutzername@domain.com" -Enabled $true -PasswordNeverExpires $true -AccountPassword $password -Path "OU=C:\Windows\NTDS\ntds.dit"
+        New-ADUser -SamAccountName $benutzername -Name "$vorname $name" -GivenName $vorname -Surname $name -UserPrincipalName "$benutzername@domain.com" -Enabled $true -PasswordNeverExpires $true -AccountPassword $password -Path "OU=schueler,DC=reboottutgut,DC=local"
    }
 

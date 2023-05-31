@@ -12,7 +12,7 @@
 $config = @{
     SchuelerXML  = "files\schueler.xml"
     InitPw       = "bztf.001"
-    OUPath       = "OU=BZTF,DC=bztf,DC=local"
+    OUPath       = "OU=schueler,DC=reboottutgut,DC=local"
     OULernende   = "Lernende"
     OUKlasse     = "Klassengruppen"
     LogFileUser  = "C:\tmp\users.log"
