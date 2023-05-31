@@ -13,3 +13,5 @@
 
     #Ablaufdatum der Passwörter aanzeigen
     $Users | Select-Object Name, @{Name="ExpiryDate";Expression={[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}}, PasswordLastSet
+
+
