@@ -4,7 +4,7 @@ Dieses Projekt bietet eine Reihe von PowerShell-Skripten, die es Ihnen ermöglic
 Installation:
 1. Laden Sie das Projekt herunter und speichern Sie es an einem geeigneten Ort.
 2. Öffnen Sie ein PowerShell-Fenster und navigieren Sie zu dem Verzeichnis, in dem Sie das Projekt gespeichert haben.
-3. Führen Sie das Skript `common.ps1` aus.
+3. Führen Sie das Skript `main.ps1` aus.
 
 Nutzung:
 Nach Abschluss der Installation können Sie die Skripts verwenden, um Benutzerinformationen abzurufen. 
