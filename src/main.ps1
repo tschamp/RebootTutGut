@@ -1,4 +1,13 @@
 # Ändere die Farbe auf Grün
+#--------------------------------------------------------------------------------
+# Autor: David Strainovic & Timo Schreiber
+# Funktion des Skripts: Alle Skripts mit Switch-Case zusammenführen und von hier aus 
+# starten
+# Erstellungsdatum: 30.05.2023
+# Version: 1.5
+# Bemerkungen: super
+#--------------------------------------------------------------------------------
+
 $Host.UI.RawUI.ForegroundColor = "Green"
 
 
