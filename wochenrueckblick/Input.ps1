@@ -11,7 +11,7 @@ $accountLockoutDuration = [int]$accountLockoutDuration
 $maximumPasswordAttempts = [int]$maximumPasswordAttempts
 
 # Ändere die Einstellungen für die Standarddomänenrichtlinie
-Set-ADDefaultDomainPasswordPolicy -Identity "reboottutgut.local" -PasswordHistoryCount $maximumPasswordAttempts -LockoutDuration (New-TimeSpan -Minutes $accountLockoutDuration)
+Set-ADDefaultDomainPasswordPolicy -Identity "reboottutgut.local" -LockoutThreshold $maximumPasswordAttempts -LockoutDuration (New-TimeSpan -Minutes $accountLockoutDuration)
 
 # Zeige die eingegebenen Werte an
 Write-Host "Die Einstellungen fuer die Benutzersperrung wurden erfolgreich aktualisiert."
