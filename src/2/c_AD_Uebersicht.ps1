@@ -33,6 +33,7 @@ Write-Output "Welche Aktion moechten Sie ausfuehren?"
 Write-Output "1. Konto welches kein Paswort hat"
 Write-Output "2. Konto welche das Passwort nicht abläuft"
 Write-Output "3. Kontos welche gesperrt sind"
+Write-Output "4. Alles anzeigen"
 
 $action = Read-Host "Geben Sie die entsprechende Zahl fuer die gewuenschte Aktion ein"
 
@@ -40,5 +41,20 @@ switch ($action) {
     '1' {Show-NoPassword}
     '2' {Show-NeverExpire}
     '3' {Show-deaktivated}
-    default { Write-Error"Ungueltige Auswahl." }
+    '4'  {
+    Write-Host "Benutzer mit keinem Passwort:"
+    Write-Host "-------------------------"
+    Write-Host ""
+    Show-NoPassword
+    
+    Write-Host "Benutzer bei dem das Passwort nicht abläuft"
+    Write-Host "-------------------------"
+    Write-Host ""
+    Show-NeverExpire
+
+    Write-Host "Benutzer, welche deaktiviert sind"
+    Write-Host "-------------------------"
+    Write-Host ""
+    Show-Deactivated}
+    default { Write-Error"Ungueltige Auswahl. Probiers nochmal" }
 }
