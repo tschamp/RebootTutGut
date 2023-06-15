@@ -49,17 +49,13 @@ function AD-User-Uebersicht{
  
  
  
- $selection = Read-Host "Welche Aktion möchtest du ausführen? Gib die entsprechende Nummer ein:
- Bulkfunktionen: 
- 1. AD-User erstellen
- 2. AD-User deaktivieren
- 3. AD-Gruppen erstellen
- 4. AD-Gruppen deaktivieren
+ $selection = Read-Host "
+ AD BENUTZER VERWALTUNG - Strainovic & Schreiber
+ ----------------------------------------------------------------------
+ Welche Aktion möchtest du ausführen? Gib die entsprechende Nummer ein:
+[1] Gruppenfunktionen
+[2] Userfunktionen
  
- Sicherheitsfunktionen:
- 5. technische wichtige Informationen der Benutzer
- 6. einzelne User Verwaltung
- 7. Übersicht aller AD Benutzer
 
 
  "
@@ -67,29 +63,95 @@ function AD-User-Uebersicht{
  switch ($selection) {
      1 {
 
-         AD-User-Erstellen
+         Write-Host"
+         -------------------------------------------------------------
+         GRUPPEN FUNKTIONEN WURDEN GEWAEHLT
+         -------------------------------------------------------------
+
+         [1] Alle AD-Accounts mit XML erstellen
+         [2] Alle AD-Accounts mit XMl deaktivieren
+
+         [3] Erstellen der dazugehörigen Gruppen
+         [4] Löschen der dazugehörigen Gruppen
+
+         [E] Zum Hauptmenu 
+         [X] Programm beenden
+
+         ------------------------------------------------------------ 
+"
+         $decision2 = Read-Host "Aktion:"
+         switch ($decision2) {
+            '1' { 
+                Write-Host "Option Alle Accounts mit XML erstellen wurde gewählt"
+                AD-User-Erstellen
+            }
+
+            '2' {
+                Write-Host "Option Alle Accounts mit XML deaktivieren wurde gewählt"
+                AD-User-Deaktivieren
+            }
+
+            '3'{
+                Write-Host "Option Gruppen erstellen mit XML"
+                AD-Gruppen-Erstellen
+            }
+
+            '4'{
+                Write-Host "Option Gruppen deaktivieren mit XML"
+                AD-Gruppen-Deaktivieren
+            }
+            'X' {
+                Write-Host "Programm wird beendet"
+            }
+
+
+            Default {Write-Error "Ungültige Auswahl."}
+         }
+         
      }
      2 {
-         AD-User-Deaktivieren
-     }
-     3 {
-          AD-Gruppen-Erstellen
-     }
-     4 {
-          AD-Gruppen-Deaktivieren
-     }
-     5 {
-        AD-Sicherheitsinformationen
+        Write-Host"
+         -------------------------------------------------------------
+         USER FUNKTIONEN WURDEN GEWAEHLT
+         -------------------------------------------------------------
 
-     }
-     6 {
-        AD-User-Verwaltung
-     }
+         [1] Sicherheitstechnische Informationen loggen
+         [2] Einzelne User Verwaltung 
+         [3] Übersicht aller AD-User
 
-     7 {
-        AD-User-Übersicht
-     }
 
+         [E] Zum Hauptmenu 
+         [X] Programm beenden
+
+         ------------------------------------------------------------ 
+         
+         
+         "
+         $decision3 = Read-Host "Aktion:"
+         switch ($decision3) {
+            '1' { 
+                Write-Host "Option Sicherheitstechnische Infos wurden gewählt"
+                AD-Sicherheitsinformationen
+            }
+
+            '2' {
+                Write-Host "Option Benutzerverwaltung wurde ausgewählt"
+                AD-User-Verwaltung
+            }
+
+            '3'{
+                Write-Host "Option Benutzerverwaltung wurde ausgewählt"
+                AD-User-Uebersicht
+            }
+            'X' {
+                Write-Host "Programm wird beendet"
+            }
+
+
+            Default {Write-Error "Ungültige Auswahl."}
+         }
+     }
+     
 
      default {
          Write-Error "Ungültige Auswahl."
