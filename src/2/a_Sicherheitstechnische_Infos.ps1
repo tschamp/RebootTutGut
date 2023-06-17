@@ -6,12 +6,5 @@
 # Bemerkungen: -
 #--------------------------------------------------------------------------------
 
-#Passwortalter
-
-    #Variable um die UserListe einzulesen 
-    $Users = Get-ADUser -filter {Enabled -eq $True -and PasswordNeverExpires -eq $False} -Properties msDS-UserPasswordExpiryTimeComputed, PasswordLastSet, CannotChangePassword
-
-    #Ablaufdatum der Passwörter aanzeigen
-    $Users | Select-Object Name, @{Name="ExpiryDate";Expression={[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}}, PasswordLastSet
 
 

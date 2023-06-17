@@ -10,11 +10,11 @@
         Passwortalter
         Datum der letzten Anmeldung
         Anzahl der Logins
-    - Für einzelne AD-Benutzer:
+    - Für einzelne AD-Benutzer: Erledigt
         Konto entsperren
         Konto aktivieren
         Passwort neu setzen
-    - Übersicht über alle AD-Benutzer:
+    - Übersicht über alle AD-Benutzer: Halb Erledigt
         für welche kein Passwort gesetzt ist
         Passwort läuft nie ab
         deaktivierte/gesperrte AD-Benutzer

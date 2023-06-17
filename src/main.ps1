@@ -7,13 +7,15 @@
 # Bemerkungen: super
 #--------------------------------------------------------------------------------
 
+. ".\config.ini.ps1"
 
 function Show-MainMenu {
     $Host.UI.RawUI.ForegroundColor = "Green" 
     Write-Host @"
+    $($config["art1"])
  AD BENUTZER VERWALTUNG - Strainovic & Schreiber
  ----------------------------------------------------------------------
- Welche Aktion möchtest du ausführen? Gib die entsprechende Nummer ein:
+ Welche Aktion moechtest du ausfuehren? Gib die entsprechende Nummer ein:
 [1] Gruppenfunktionen
 [2] Userfunktionen
 [X] Programm beenden
@@ -69,22 +71,18 @@ function Show-GroupFunctionsMenu {
         '1' {
             Write-Host "Option Alle Accounts mit XML erstellen wurde gewählt"
             AD-User-Erstellen
-            Clear-Console
         }
         '2' {
             Write-Host "Option Alle Accounts mit XML deaktivieren wurde gewählt"
             AD-User-Deaktivieren
-            Clear-Console
         }
         '3' {
             Write-Host "Option Gruppen erstellen mit XML wurde gewählt"
             AD-Gruppen-Erstellen
-            Clear-Console
         }
         '4' {
             Write-Host "Option Gruppen deaktivieren mit XML wurde gewählt"
             AD-Gruppen-Deaktivieren
-            Clear-Console
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
@@ -112,7 +110,7 @@ function Show-UserFunctionsMenu {
 
 [1] Sicherheitstechnische Informationen loggen
 [2] Einzelne User Verwaltung 
-[3] Übersicht aller AD-User
+[3] Uebersicht aller AD-User
 [E] Zum Hauptmenu 
 [X] Programm beenden
 
@@ -124,17 +122,14 @@ function Show-UserFunctionsMenu {
         '1' {
             Write-Host "Option Sicherheitstechnische Infos wurde gewählt"
             AD-Sicherheitsinformationen
-            Clear-Console
         }
         '2' {
             Write-Host "Option Benutzerverwaltung wurde gewählt"
             AD-User-Verwaltung
-            Clear-Console
         }
         '3' {
             Write-Host "Option Benutzerverwaltung wurde gewählt"
             AD-User-Uebersicht
-            Clear-Console
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
@@ -154,37 +149,37 @@ function Show-UserFunctionsMenu {
 
 function AD-User-Erstellen {
     Write-Host "Rufe das AD-User-Erstellungsskript auf..."
-    . "src\1\a_AD_User_erstellen.ps1"
+    . "$($config["createUsers"])"
 }
 
 function AD-User-Deaktivieren {
     Write-Host "Rufe das AD-User-Deaktivierungsskript auf..."
-    . "src\1\a_AD_User_deaktivieren.ps1"
+    . "$($config["deactivateUsers"])"
 }
 
 function AD-Gruppen-Erstellen {
     Write-Host "Rufe das AD-Gruppen-Erstellungsskript auf..."
-    . "src\1\b_AD_Gruppen_erstellen.ps1"
+    . "$($config["createGroups"])"
 }
 
 function AD-Gruppen-Deaktivieren {
     Write-Host "Rufe das AD-Gruppen-Deaktivierungsskript auf..."
-    . "src\1\b_AD_Gruppen_deaktivieren.ps1"
+    . "$($config["deactivateGroups"])"
 }
 
 function AD-Sicherheitsinformationen {
     Write-Host "Rufe das AD-Sicherheitsinformationenskript auf..."
-    . "src\2\a_Sicherheitstechnische_Infos.ps1"
+    . "$($config["securityLogs"])"
 }
 
 function AD-User-Verwaltung {
     Write-Host "Rufe das AD-User-Verwaltungsskript auf..."
-    . "src\2\b_einzelne_AD_User_Verwalten.ps1"
+    . "$($config["manageUser"])"
 }
 
 function AD-User-Uebersicht {
     Write-Host "Rufe das AD-User-Uebersichtskript auf..."
-    . "src\2\c_AD_Uebersicht.ps1"
+    . "$($config["overviewUser"])"
 }
 
 
