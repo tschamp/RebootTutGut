@@ -94,3 +94,6 @@ function Show-Deactivated {
 }
 
 
+Clear-Console
+
+

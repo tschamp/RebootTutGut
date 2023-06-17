@@ -97,11 +97,17 @@ function unlockADUser {
         if ($user.LockedOut) {
             $user | Unlock-ADAccount
             Write-Host "Das Konto für Benutzer $username wurde entsperrt."
+            Start-Sleep -Seconds 5
+            Clear-Console
         } else {
             Write-Host "Das Konto für Benutzer $username ist bereits entsperrt."
+            Start-Sleep -Seconds 5
+            Clear-Console
         }
     } else {
-        Write-Host "Benutzer $username wurde nicht gefunden."
+        Write-Host "Benutzer $username wurde nicht gefunden.."
+        Start-Sleep -Seconds 5
+        Clear-Console
     }
 }
 
