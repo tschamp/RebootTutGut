@@ -8,15 +8,6 @@
 #--------------------------------------------------------------------------------
 
 
-
-
-function Clear-Console {
-    $Host.UI.RawUI.ForegroundColor = "Yellow"
-    Start-Sleep -Seconds 1.5
-    Clear-Host
-    Show-MainMenu
-}
-
 function Show-MainMenu {
     $Host.UI.RawUI.ForegroundColor = "Green" 
     Write-Host @"
@@ -45,6 +36,17 @@ function Show-MainMenu {
         }
     }
 }
+
+
+
+function Clear-Console {
+    $Host.UI.RawUI.ForegroundColor = "Yellow"
+    Start-Sleep -Seconds 1.5
+    Clear-Host
+    Show-MainMenu
+}
+
+
 
 function Show-GroupFunctionsMenu {
     $Host.UI.RawUI.ForegroundColor = "Green"
@@ -185,4 +187,6 @@ function AD-User-Uebersicht {
     . "src\2\c_AD_Uebersicht.ps1"
 }
 
+
+## ruft die funktion konsole aus, in dieser wird dann das main menu ausgerufen und so weiter dies das ananas
 Clear-Console
