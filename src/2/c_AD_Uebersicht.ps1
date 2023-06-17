@@ -30,17 +30,33 @@ function Show-deaktivated {
 
 
 Write-Output "Welche Aktion moechten Sie ausfuehren?"
-Write-Output "1. Konto welches kein Paswort hat"
-Write-Output "2. Konto welche das Passwort nicht abläuft"
-Write-Output "3. Kontos welche gesperrt sind"
+Write-Output "1. Konten welches kein Paswort hat"
+Write-Output "2. Konten welche das Passwort nicht abläuft"
+Write-Output "3. Konten welche gesperrt sind"
 Write-Output "4. Alles anzeigen"
 
-$action = Read-Host "Geben Sie die entsprechende Zahl fuer die gewuenschte Aktion ein"
+
+
+while ($action -notin 1, 2, 3, 4) {
+
+    $action = Read-Host "Geben Sie die entsprechende Zahl fuer die gewuenschte Aktion ein"
 
 switch ($action) {
-    '1' {Show-NoPassword}
-    '2' {Show-NeverExpire}
-    '3' {Show-deaktivated}
+    '1' {
+        Write-Host "Benutzer mit keinem Passwort:"
+        Write-Host "-------------------------"
+        Write-Host ""    
+        Show-NoPassword}
+    '2' {
+        Write-Host "Benutzer bei dem das Passwort nicht ablaeuft"
+        Write-Host "-------------------------"
+        Write-Host ""
+        Show-NeverExpire}
+    '3' {
+        Write-Host "Benutzer, welche deaktiviert sind"
+        Write-Host "-------------------------"
+        Write-Host ""
+        Show-deaktivated}
     '4'  {
     Write-Host "Benutzer mit keinem Passwort:"
     Write-Host "-------------------------"
@@ -56,5 +72,6 @@ switch ($action) {
     Write-Host "-------------------------"
     Write-Host ""
     Show-Deactivated}
-    default { Write-Error"Ungueltige Auswahl. Probiers nochmal" }
+    default { Write-Host "Ungueltige Auswahl. Probiers nochmal" }
+}
 }
