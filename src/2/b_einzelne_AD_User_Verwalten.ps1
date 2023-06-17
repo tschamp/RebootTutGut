@@ -41,17 +41,17 @@ function Show-MainMenu {
         '1' {
             Write-Host "Das Skript um einen Benutzer zu entsperren wird ausgeführt"
             Start-Sleep -Seconds 0.5
-            $adUser = getADUser
+            $adUser = Read-Host "Wie heisst der Benutzer"
             unlockADUser -username $adUser
             
         }
         '2' {
-            $adUser = getADUser
+            $adUser = Read-Host "Wie heisst der Benutzer"
             activateADUser -username $adUser
         }
 
         '3' {
-            $adUser = getADUser
+            $adUser = Read-Host "Wie heisst der Benutzer"
             resetADpwd -username $adUser
         }
 
@@ -76,53 +76,49 @@ function Show-MainMenu {
 
 function Clear-Console {
     $Host.UI.RawUI.ForegroundColor = "Yellow"
-    Start-Sleep -Seconds 1.25
+    Start-Sleep -Seconds 2
     Clear-Host
     Show-MainMenu
 }
 
-function getADUser {
-    $user = Read-Host = "Gebe den AD-Benutzernamen ein!" 
-    return $user
 
-}
 
 function unlockADUser {
     param (
         [Parameter(Mandatory=$true)]
         [string]$username
     )
+    
     $user = Get-ADUser -Identity $username
     if ($user) {
         if ($user.LockedOut) {
-            $user | Unlock-ADAccount
+            Unlock-ADAccount -Identity $user
             Write-Host "Das Konto für Benutzer $username wurde entsperrt."
-            Start-Sleep -Seconds 5
             Clear-Console
         } else {
             Write-Host "Das Konto für Benutzer $username ist bereits entsperrt."
-            Start-Sleep -Seconds 5
             Clear-Console
         }
     } else {
-        Write-Host "Benutzer $username wurde nicht gefunden.."
-        Start-Sleep -Seconds 5
+        Write-Host "Benutzer $username wurde nicht gefunden."
+        Start-Sleep -Seconds 2
         Clear-Console
     }
 }
 
 
+
+#geht auch
 function activateADUser {
     param (
         [Parameter(Mandatory=$true)]
         [string]$username
     )
-    # Code zum Aktivieren des AD-Benutzerkontos
-    # Beispielcode:
+    
     $user = Get-ADUser -Identity $username
     if ($user) {
         if (-not $user.Enabled) {
-            $user | Enable-ADAccount
+            Enable-ADAccount -Identity $user
             Write-Host "Das Konto für Benutzer $username wurde aktiviert."
         } else {
             Write-Host "Das Konto für Benutzer $username ist bereits aktiviert."
@@ -130,36 +126,45 @@ function activateADUser {
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
+    Clear-Console
 }
 
-
+# Funktioniert 100%
 function resetADpwd {
     param (
         [Parameter(Mandatory=$true)]
         [string]$username
     )
-
+    
     $user = Get-ADUser -Identity $username
     if ($user) {
-        do {
-            $newPassword = Read-Host "Gib das neue Passwort für den Benutzer $username ein" -AsSecureString
-            $confirmPassword = Read-Host "Gib das neue Passwort erneut ein" -AsSecureString
-
-            if ($newPassword -ne $confirmPassword) {
-                Write-Host "Die Passwörter stimmen nicht überein. Bitte versuche es erneut."
-            }
-        } while ($newPassword -ne $confirmPassword)
-
-        try {
-            $user | Set-ADAccountPassword -NewPassword $newPassword -Reset
-            Write-Host "Das Passwort für den Benutzer $username wurde erfolgreich zurückgesetzt."
-        } catch {
-            Write-Host "Fehler beim Zurücksetzen des Passworts: $_"
+        $newPassword = Read-Host "Geben Sie das neue Passwort für Benutzer $username ein" -AsSecureString
+        $confirmPassword = Read-Host "Bestätigen Sie das neue Passwort für Benutzer $username" -AsSecureString
+        
+        $newPasswordPlain = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($newPassword))
+        $confirmPasswordPlain = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($confirmPassword))
+        
+        if ($newPasswordPlain -eq $confirmPasswordPlain) {
+            $newPasswordSecure = ConvertTo-SecureString -String $newPasswordPlain -AsPlainText -Force
+            $user | Set-ADAccountPassword -NewPassword $newPasswordSecure -Reset
+            Write-Host "Das Passwort für Benutzer $username wurde erfolgreich zurückgesetzt."
+        } else {
+            Write-Host "Die eingegebenen Passwörter stimmen nicht überein. Das Passwort wurde nicht geändert."
+            Clear-Console
         }
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
+        Clear-Console
     }
 }
+
+
+
+
+
+
+
+
 
 
 
