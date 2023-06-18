@@ -162,8 +162,17 @@ function resetADpwd {
         
         if ($newPasswordPlain -eq $confirmPasswordPlain) {
             $newPasswordSecure = ConvertTo-SecureString -String $newPasswordPlain -AsPlainText -Force
-            $user | Set-ADAccountPassword -NewPassword $newPasswordSecure -Reset
-            Write-Host "Das Passwort für Benutzer $username wurde erfolgreich zurückgesetzt."
+            
+            # Überprüfen der Domänenanforderungen für das Passwort
+            $policyInfo = Get-ADDefaultDomainPasswordPolicy
+            $passwordMeetsRequirements = $newPasswordPlain -match $policyInfo.ComplexityRequirements
+            
+            if ($passwordMeetsRequirements) {
+                $user | Set-ADAccountPassword -NewPassword $newPasswordSecure -Reset
+                Write-Host "Das Passwort für Benutzer $username wurde erfolgreich zurückgesetzt."
+            } else {
+                Write-Host "Das eingegebene Passwort erfüllt nicht die Domänenanforderungen."
+            }
         } else {
             Write-Host "Die eingegebenen Passwörter stimmen nicht überein. Das Passwort wurde nicht geändert."
         }
@@ -172,6 +181,7 @@ function resetADpwd {
     }
     Press-AnyKey
 }
+
 
 
 
