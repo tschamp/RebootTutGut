@@ -89,7 +89,10 @@ function Clear-Console {
 }
 
 function Press-AnyKey {
-    Write-Host "Druecken Sie eine beliebige Taste, um zum Menu zurueckzukehren."
+    $Host.UI.RawUI.ForegroundColor = "White"
+    Write-Host "
+    ----------------------------------------------------------------
+    Druecken Sie eine beliebige Taste, um zum Menu zurueckzukehren."
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     Clear-Console
 }
