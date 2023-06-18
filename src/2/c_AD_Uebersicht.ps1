@@ -46,9 +46,9 @@ function Show-MainMenu {
         }
 
         '3' {
-            Write-Host "-User ohne Ablauf des Passworts wurde gewählt..-"
+            Write-Host "-User mit Sperrungen wurde gewählt..-"
             Start-Sleep -Seconds 0.5
-            Show-Deactivated
+            Show-DeactivatedandLocked
         }
 
         'E' {
@@ -76,22 +76,60 @@ function Clear-Console {
     Clear-Host
     Show-MainMenu
 }
+function Press-AnyKey {
+    Write-Host "Druecken Sie eine beliebige Taste, um zum Menu zurueckzukehren."
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    Clear-Console
+}
 
 
 
 
 function Show-NoPassword {
-    Get-ADUser -filter {PaswordNotRequired -eq $true} | Select-Object Name
-    
+    $users = Get-ADUser -Filter {PasswordNeverExpires -eq $true -and PasswordNotRequired -eq $true} -Properties Name, SamAccountName
+
+    if ($users) {
+        Write-Host "Benutzer ohne Passwort:"
+        $users | Format-Table Name, SamAccountName -AutoSize
+    } else {
+        Write-Host "Keine Benutzer ohne Passwort gefunden."
+    }
+
+    Press-AnyKey
 }
 
-function Show-NeverExpire{
-    Get-ADUser -filter {Enabled -eq $TRUE -and PasswordNeverExpires -eq $TRUE} ` -Properties PasswordLastSet | Select-Object Name, PasswordLastSet | ` Sort-Object -Property Name -Descending | Format-Table
+
+function Show-NeverExpire {
+    $users = Get-ADUser -Filter {PasswordNeverExpires -eq $true} -Properties Name, SamAccountName
+
+    if ($users) {
+        Write-Host "Benutzer, bei denen das Passwort nicht abläuft:"
+        $users | Format-Table Name, SamAccountName -AutoSize
+    } else {
+        Write-Host "Keine Benutzer gefunden, bei denen das Passwort nicht abläuft."
+    }
+
+    Press-AnyKey
 }
 
-function Show-Deactivated {
-    Get-ADUser -filter {Enabled -eq $false} | Select-Object Name PasswordLastSet
+
+function Show-DeactivatedandLocked {
+    $lockedUsers = Search-ADAccount -LockedOut | Get-ADUser -Properties Name, SamAccountName
+    $disabledUsers = Get-ADUser -Filter {Enabled -eq $false} -Properties Name, SamAccountName
+
+    $users = $lockedUsers + $disabledUsers
+
+    if ($users) {
+        Write-Host "Gesperrte und deaktivierte Benutzer:"
+        $users | Format-Table Name, SamAccountName -AutoSize
+    } else {
+        Write-Host "Keine gesperrten oder deaktivierten Benutzer gefunden."
+    }
+
+    Press-AnyKey
 }
+
+
 
 
 Clear-Console

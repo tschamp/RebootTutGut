@@ -39,20 +39,27 @@ function Show-MainMenu {
     $selection = Read-Host "Auswahl"
     switch ($selection) {
         '1' {
-            Write-Host "Das Skript um einen Benutzer zu entsperren wird ausgeführt"
+            Write-Host "Das Skript um einen Benutzer zu entsperren wird ausgefuehrt"
             Start-Sleep -Seconds 0.5
             $adUser = Read-Host "Wie heisst der Benutzer"
             unlockADUser -username $adUser
+            Press-AnyKey
             
         }
         '2' {
+            Write-Host "Das Skript um einen Benutzer zu aktivieren wird ausgefuehrt"
+            Start-Sleep -Seconds 0.5
             $adUser = Read-Host "Wie heisst der Benutzer"
             activateADUser -username $adUser
+            Press-AnyKey
         }
 
         '3' {
+            Write-Host "Das Skript um das Passwort zurueckzusetzen wird ausgefuehrt"
+            Start-Sleep -Seconds 0.5
             $adUser = Read-Host "Wie heisst der Benutzer"
             resetADpwd -username $adUser
+            Press-AnyKey
         }
 
         'E' {
@@ -81,8 +88,15 @@ function Clear-Console {
     Show-MainMenu
 }
 
+function Press-AnyKey {
+    Write-Host "Druecken Sie eine beliebige Taste, um zum Menu zurueckzukehren."
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    Clear-Console
+}
 
 
+
+# Funktioniert nicht, entsperrt einfach nicht digga
 function unlockADUser {
     param (
         [Parameter(Mandatory=$true)]
@@ -94,21 +108,18 @@ function unlockADUser {
         if ($user.LockedOut) {
             Unlock-ADAccount -Identity $user
             Write-Host "Das Konto für Benutzer $username wurde entsperrt."
-            Clear-Console
         } else {
             Write-Host "Das Konto für Benutzer $username ist bereits entsperrt."
-            Clear-Console
         }
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
         Start-Sleep -Seconds 2
-        Clear-Console
     }
 }
 
 
 
-#geht auch
+# Funktioniert 100%
 function activateADUser {
     param (
         [Parameter(Mandatory=$true)]
@@ -126,7 +137,6 @@ function activateADUser {
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
-    Clear-Console
 }
 
 # Funktioniert 100%
@@ -150,11 +160,9 @@ function resetADpwd {
             Write-Host "Das Passwort für Benutzer $username wurde erfolgreich zurückgesetzt."
         } else {
             Write-Host "Die eingegebenen Passwörter stimmen nicht überein. Das Passwort wurde nicht geändert."
-            Clear-Console
         }
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
-        Clear-Console
     }
 }
 
