@@ -145,7 +145,8 @@ function activateADUser {
     Press-AnyKey
 }
 
-# Funktioniert 100%
+# Funktioniert so
+# aber das mit password policy ist komisch und geht nicht
 function resetADpwd {
     param (
         [Parameter(Mandatory=$true)]
@@ -162,25 +163,21 @@ function resetADpwd {
         
         if ($newPasswordPlain -eq $confirmPasswordPlain) {
             $newPasswordSecure = ConvertTo-SecureString -String $newPasswordPlain -AsPlainText -Force
-            
-            # Überprüfen der Domänenanforderungen für das Passwort
-            $policyInfo = Get-ADDefaultDomainPasswordPolicy
-            $passwordMeetsRequirements = $newPasswordPlain -match $policyInfo.ComplexityRequirements
-            
-            if ($passwordMeetsRequirements) {
-                $user | Set-ADAccountPassword -NewPassword $newPasswordSecure -Reset
-                Write-Host "Das Passwort für Benutzer $username wurde erfolgreich zurückgesetzt."
-            } else {
-                Write-Host "Das eingegebene Passwort erfüllt nicht die Domänenanforderungen."
-            }
+            $user | Set-ADAccountPassword -NewPassword $newPasswordSecure -Reset
+            Write-Host "Das Passwort für Benutzer $username wurde erfolgreich zurückgesetzt."
+            $Host.UI.RawUI.ForegroundColor = "Blue"
+            Write-Host "Achtung! Falls du eine Fehlermeldung siehst, erfüllt dein Passwort unseren Anforderungen nicht und wurde nicht zurückgesetzt"
+
         } else {
-            Write-Host "Die eingegebenen Passwörter stimmen nicht überein. Das Passwort wurde nicht geändert."
+            Write-Host "Es gab einen Fehler! Du hast dich vertippt!"
         }
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
     Press-AnyKey
 }
+
+
 
 
 
