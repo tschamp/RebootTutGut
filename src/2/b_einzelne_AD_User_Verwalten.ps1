@@ -73,6 +73,7 @@ function Show-MainMenu {
         'X' {
             $Host.UI.RawUI.ForegroundColor = "Red" 
             Write-Host "Programm wird beendet."
+            
         }
         default {
             Write-Host "Ungültige Auswahl."
@@ -83,7 +84,7 @@ function Show-MainMenu {
 
 function Clear-Console {
     $Host.UI.RawUI.ForegroundColor = "Yellow"
-    Start-Sleep -Seconds 2
+    Start-Sleep -Seconds 1.25
     Clear-Host
     Show-MainMenu
 }
