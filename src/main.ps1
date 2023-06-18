@@ -54,7 +54,7 @@ function Show-GroupFunctionsMenu {
     $Host.UI.RawUI.ForegroundColor = "Green"
     Write-Host @"
  -------------------------------------------------------------
- GRUPPEN FUNKTIONEN WURDEN GEWAEHLT
+ $($config["art2"])
  -------------------------------------------------------------
 
 [1] Alle AD-Accounts mit XML erstellen
@@ -105,7 +105,7 @@ function Show-UserFunctionsMenu {
     Write-Host @"
     
  -------------------------------------------------------------
- USER FUNKTIONEN WURDEN GEWAEHLT
+ $($config["art3"])
  -------------------------------------------------------------
 
 [1] Sicherheitstechnische Informationen loggen

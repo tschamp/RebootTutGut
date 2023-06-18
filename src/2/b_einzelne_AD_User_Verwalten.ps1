@@ -113,8 +113,9 @@ function unlockADUser {
         }
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
-        Start-Sleep -Seconds 2
     }
+
+    Press-AnyKey
 }
 
 
@@ -137,6 +138,7 @@ function activateADUser {
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
+    Press-AnyKey
 }
 
 # Funktioniert 100%
@@ -164,6 +166,7 @@ function resetADpwd {
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
+    Press-AnyKey
 }
 
 
