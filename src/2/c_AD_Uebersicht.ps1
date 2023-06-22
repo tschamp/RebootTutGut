@@ -64,7 +64,7 @@ function Show-MainMenu {
             Write-Host "Programm wird beendet."
         }
         default {
-            Write-Host "Ungültige Auswahl."
+            Write-Host "Ungueltige Auswahl."
             Clear-Console
         }
     }
@@ -93,12 +93,14 @@ function Show-NoPassword {
 
     if ($users) {
         Write-Host "Benutzer ohne Passwort:"
-        $users | Format-Table Name, SamAccountName -AutoSize
+        $users | Out-GridView 
+
     } else {
         Write-Host "Keine Benutzer ohne Passwort gefunden."
-    }
 
+    }
     Press-AnyKey
+
 }
 
 
@@ -107,7 +109,7 @@ function Show-NeverExpire {
 
     if ($users) {
         Write-Host "Benutzer, bei denen das Passwort nicht abläuft:"
-        $users | Format-Table Name, SamAccountName -AutoSize
+        $users | Out-GridView 
     } else {
         Write-Host "Keine Benutzer gefunden, bei denen das Passwort nicht abläuft."
     }
@@ -124,12 +126,13 @@ function Show-DeactivatedandLocked {
 
     if ($users) {
         Write-Host "Gesperrte und deaktivierte Benutzer:"
-        $users | Format-Table Name, SamAccountName -AutoSize
+        $users | Out-GridView 
     } else {
         Write-Host "Keine gesperrten oder deaktivierten Benutzer gefunden."
-    }
 
+    }
     Press-AnyKey
+
 }
 
 
