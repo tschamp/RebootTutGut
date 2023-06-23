@@ -99,35 +99,93 @@ function Press-AnyKey {
 
 # Macht mit einem Taskplanner täglich einen Log von den Vorgaben
 function Daily-Log {
+
+    [Parameter(Mandatory = $true)]
+    [DateTime]$ScheduledTime
+
+
     # Pfade konfigurieren
-    $logPath = $config["logPath"]
-   
+    $LogFilePath = $config["dailylogPath"]
+    
+    $ErrorActionPreference = "Stop"
+    
+    # Alle Benutzer aus dem Active Directory abrufen
+    $users = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount -ErrorAction Stop
+    
+    # Für jeden Benutzer Informationen protokollieren
+    foreach ($user in $users) {
+        $username = $user.SamAccountName
+        
+        # Passwortalter ermitteln
+        $passwordAge = (Get-Date) - $user.PasswordLastSet
+        
+        # Datum der letzten Anmeldung ermitteln
+        $lastLogonDate = $user.LastLogonDate
+        
+        # Anzahl der Logins ermitteln
+        $logonCount = $user.LogonCount
+        
+        # Protokollieren der Informationen in die Logdatei
+        $logEntry = "Benutzername: $username | Passwortalter: $passwordAge | Datum der letzten Anmeldung: $lastLogonDate | Anzahl der Logins: $logonCount"
+        Add-Content -Path $LogFilePath -Value $logEntry
+    }
+    
+    Write-Host "AD-Informationen für alle Benutzer wurden protokolliert." -ForegroundColor Green
+
+
+
+# Erstelle bzw. aktualisiere den Task im Windows Task Scheduler
+$TaskName = "ADUserInfoLogging"
+$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -Command `"Log-ADUserInfo -LogFilePath '$LogFilePath'`""
+$TaskTrigger = New-ScheduledTaskTrigger -Daily -At "12:00 PM"
+$TaskSettings = New-ScheduledTaskSettingsSet
+$TaskSettings.DeleteExpiredTaskAfter = "PT0S"
+$TaskPrincipal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel HighestAvailable
+Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -Principal $TaskPrincipal -Force
+
+Write-Host "Task wurde erstellt bzw. aktualisiert." -ForegroundColor Green
+Press-AnyKey
+
+    
 }
 
-# Dieses Skript ändert den Zeitpunkt des Dailylogs von den security infos von den AD Nutzern wie:
-# Passwortalter, Datum der letzten Anmeldung, Anzahl der Logins
-# Daily logs werden mit planner gemacht, diese führt man nicht direkt als funktion aus weil es mit dem TaskPlanner gemacht wird
-
-# Der Wert von Dieser Funktion wird bei der Funktion dailyLog dann gegeben und dort geändert!!
-
+# 
 # Funktion zum Ändern des Zeitpunkts für das tägliche Log
 function Change-LogTime {
-    $Host.UI.RawUI.ForegroundColor = "Green"
-    Write-Host @"
-Gib den neuen Zeitpunkt für das tägliche Log ein (HH:MM:SS):
-"@
-    $newTime = Read-Host "Zeitpunkt"
-    $taskTime = Get-Date $newTime -ErrorAction SilentlyContinue
-    if ($taskTime -eq $null) {
-        Write-Host "Ungültiges Zeitformat. Der Standardzeitpunkt 12:00:00 wird verwendet."
-        $taskTime = Get-Date -Hour 12 -Minute 0 -Second 0
-    }
-    $taskTime
+  
 }
 
 
 # Skript um jetzt direkt einen Log zu erstellen im Verzeichnis  $($config["manualLogPath"]
 function manualLog {
+
+    $LogFilePath = $config["manualLogPath"]
+   
+    $ErrorActionPreference = "Stop"
+    
+    # Alle Benutzer aus dem Active Directory abrufen
+    $users = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount -ErrorAction Stop
+    
+    # Für jeden Benutzer Informationen protokollieren
+    foreach ($user in $users) {
+        $username = $user.SamAccountName
+        
+        # Passwortalter ermitteln
+        $passwordAge = (Get-Date) - $user.PasswordLastSet
+        
+        # Datum der letzten Anmeldung ermitteln
+        $lastLogonDate = $user.LastLogonDate
+        
+        # Anzahl der Logins ermitteln
+        $logonCount = $user.LogonCount
+        
+        # Protokollieren der Informationen in die Logdatei
+        $logEntry = "Benutzername: $username | Passwortalter: $passwordAge | Datum der letzten Anmeldung: $lastLogonDate | Anzahl der Logins: $logonCount"
+        Add-Content -Path $LogFilePath -Value $logEntry
+    }
+    
+    Write-Host "AD-Informationen für alle Benutzer wurden manuell protokolliert." -ForegroundColor Green
+
     Press-AnyKey
     
 }

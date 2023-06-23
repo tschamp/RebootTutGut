@@ -28,6 +28,7 @@ $config = @{
 
     securityLogs = "2\a_Sicherheitstechnische_Infos.ps1"
     manualLogPath = "2\manualLogs"
+    dailylogPath = "2\dailyLogs"
     manageUser = "2\b_einzelne_AD_User_Verwalten.ps1"
     overviewUser = "2\c_AD_Uebersicht"
 
