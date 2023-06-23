@@ -171,7 +171,7 @@ function manualLog {
         $username = $user.SamAccountName
         
         # Passwortalter ermitteln
-        $passwordAge = (Get-Date) - $user.PasswordLastSet
+        $passwordAge = (Get-Date) - $user.PasswordLastSet.Date
         
         # Datum der letzten Anmeldung ermitteln
         $lastLogonDate = $user.LastLogonDate
