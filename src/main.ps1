@@ -7,19 +7,7 @@
 # Bemerkungen: super
 #--------------------------------------------------------------------------------
 
-Import-Module -Name .\src\config.ini.ps1
-
-Import-Module -name .\src\1\a_AD_User_erstellen.ps1
-Import-Module -name .\src\1\a_AD_User_deaktivieren.ps1
-Import-Module -name .\src\1\b_AD_Gruppen_erstellen.ps1
-Import-Module -name .\src\1\b_AD_Gruppen_deaktivieren.ps1
-
-
-Import-Module -name .\src\2\a_Sicherheitstechnische_Infos.ps1
-Import-Module -name .\src\2\b_einzelne_AD_User_Verwalten.ps1
-Import-Module -name .\src\2\c_AD_Uebersicht.ps1
-
-
+. ".\config.ini.ps1"
 
 function Show-MainMenu {
     $Host.UI.RawUI.ForegroundColor = "Green" 
@@ -82,19 +70,19 @@ function Show-GroupFunctionsMenu {
     switch ($decision) {
         '1' {
             Write-Host "Option Alle Accounts mit XML erstellen wurde gewählt"
-            a_AD_User_erstellen
+            AD-User-Erstellen
         }
         '2' {
             Write-Host "Option Alle Accounts mit XML deaktivieren wurde gewählt"
-            a_AD_User_deaktivieren
+            AD-User-Deaktivieren
         }
         '3' {
             Write-Host "Option Gruppen erstellen mit XML wurde gewählt"
-            b_AD_Gruppen_erstellen
+            AD-Gruppen-Erstellen
         }
         '4' {
             Write-Host "Option Gruppen deaktivieren mit XML wurde gewählt"
-            b_AD_Gruppen_deaktivieren
+            AD-Gruppen-Deaktivieren
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
@@ -133,15 +121,15 @@ function Show-UserFunctionsMenu {
     switch ($decision) {
         '1' {
             Write-Host "Option Sicherheitstechnische Infos wurde gewählt"
-            a_Sicherheitstechnische_Infos
+            AD-Sicherheitsinformationen
         }
         '2' {
             Write-Host "Option Benutzerverwaltung wurde gewählt"
-            b_einzelne_AD_User_Verwalten
+            AD-User-Verwaltung
         }
         '3' {
             Write-Host "Option Benutzerverwaltung wurde gewählt"
-            c_AD_Uebersicht
+            AD-User-Uebersicht
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
@@ -160,6 +148,41 @@ function Show-UserFunctionsMenu {
 }
 
 
+
+function AD-User-Erstellen {
+    Write-Host "Rufe das AD-User-Erstellungsskript auf..."
+    . "$($config["createUsers"])"
+}
+
+function AD-User-Deaktivieren {
+    Write-Host "Rufe das AD-User-Deaktivierungsskript auf..."
+    . "$($config["deactivateUsers"])"
+}
+
+function AD-Gruppen-Erstellen {
+    Write-Host "Rufe das AD-Gruppen-Erstellungsskript auf..."
+    . "$($config["createGroups"])"
+}
+
+function AD-Gruppen-Deaktivieren {
+    Write-Host "Rufe das AD-Gruppen-Deaktivierungsskript auf..."
+    . "$($config["deactivateGroups"])"
+}
+
+function AD-Sicherheitsinformationen {
+    Write-Host "Rufe das AD-Sicherheitsinformationenskript auf..."
+    . "$($config["securityLogs"])"
+}
+
+function AD-User-Verwaltung {
+    Write-Host "Rufe das AD-User-Verwaltungsskript auf..."
+    . "$($config["manageUser"])"
+}
+
+function AD-User-Uebersicht {
+    Write-Host "Rufe das AD-User-Uebersichtskript auf..."
+    . "$($config["overviewUser"])"
+}
 
 
 ## ruft die funktion konsole aus, in dieser wird dann das main menu ausgerufen und so weiter dies das ananas
