@@ -7,17 +7,17 @@
 # Bemerkungen: super
 #--------------------------------------------------------------------------------
 
-$configPath = Join-Path -Path $PSScriptRoot -ChildPath "config.ini.ps1"
-Import-Module -Name $configPath
+Import-Module -Name .\src\config.ini.ps1
 
-Import-Module -name $($config["createUser"])
-Import-Module -name $($config["deactivateUsers"])
-Import-Module -name $($config["createGroups"])
-Import-Module -name $($config["deactivateGroups"])
+Import-Module -name .\src\1\a_AD_User_erstellen.ps1
+Import-Module -name .\src\1\a_AD_User_deaktivieren.ps1
+Import-Module -name .\src\1\b_AD_Gruppen_erstellen.ps1
+Import-Module -name .\src\1\b_AD_Gruppen_deaktivieren.ps1
 
-Import-Module -name $($config["securityLogs"])
-Import-Module -name $($config["manageUser"])
-Import-Module -name $($config["overviewUser"])
+
+Import-Module -name .\src\2\a_Sicherheitstechnische_Infos.ps1
+Import-Module -name .\src\2\b_einzelne_AD_User_Verwalten.ps1
+Import-Module -name .\src\2\c_AD_Uebersicht.ps1
 
 
 
