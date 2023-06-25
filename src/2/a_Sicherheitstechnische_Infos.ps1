@@ -126,67 +126,9 @@ function Error-Log {
 
 # Macht mit einem Taskplanner täglich einen Log von den Vorgaben
 function dailyLog {
-
-    [Parameter(Mandatory = $true)]
-    [DateTime]$ScheduledTime
-
-
-    # Pfade konfigurieren
-    $LogFilePath = $config["dailylogPath"]
-    
-    $ErrorActionPreference = "Stop"
-    
-    # Alle Benutzer aus dem Active Directory abrufen
-    $users = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount -ErrorAction Stop
-    
-    try {
-    # Für jeden Benutzer Informationen protokollieren
-    foreach ($user in $users) {
-        $username = $user.SamAccountName
-        
-        # Passwortalter ermitteln
-        $passwordAge = (Get-Date) - $user.PasswordLastSet
-        
-        # Datum der letzten Anmeldung ermitteln
-        $lastLogonDate = $user.LastLogonDate
-        
-        # Anzahl der Logins ermitteln
-        $logonCount = $user.LogonCount
-        
-        # Protokollieren der Informationen in die Logdatei
-        $logEntry = "Benutzername: $username | Passwortalter: $passwordAge | Datum der letzten Anmeldung: $lastLogonDate | Anzahl der Logins: $logonCount"
-        Add-Content -Path $LogFilePath -Value $logEntry
-    }
-    
-    Write-Host "AD-Informationen für alle Benutzer wurden protokolliert." -ForegroundColor Green
-
-
-
-# Erstelle bzw. aktualisiere den Task im Windows Task Scheduler
-$TaskName = "ADUserInfoLogging"
-$TaskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -Command `"Log-ADUserInfo -LogFilePath '$LogFilePath'`""
-$TaskTrigger = New-ScheduledTaskTrigger -Daily -At "12:00 PM"
-$TaskSettings = New-ScheduledTaskSettingsSet
-$TaskSettings.DeleteExpiredTaskAfter = "PT0S"
-$TaskPrincipal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel HighestAvailable
-Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -Principal $TaskPrincipal -Force
-
-Write-Host "Task wurde erstellt bzw. aktualisiert." -ForegroundColor Green
-
-Standard-Log -FunctionName "dailyLog"
+  
 
 }
-
-catch {
-    $errorMessage = $_.Exception.Message
-    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
-    Error-Log -FunctionName "dailyLog" -ErrorMessage $errorMessage
-}
-
-
-Press-AnyKey
-}
-
     
 
 
@@ -194,47 +136,62 @@ Press-AnyKey
 
 # Skript um jetzt direkt einen Log zu erstellen im Verzeichnis  $($config["manualLogPath"]
 function manualLog {
-
-    $LogFilePath = $config["manualLogPath"]
-   
-    $ErrorActionPreference = "Stop"
-    
-    # Alle Benutzer aus dem Active Directory abrufen
-    $users = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount -ErrorAction Stop
-    
     try {
-    # Für jeden Benutzer Informationen protokollieren
-    foreach ($user in $users) {
-        $username = $user.SamAccountName
-        
-        # Passwortalter ermitteln
-        $passwordAge = (Get-Date) - $user.PasswordLastSet.Date
-        
-        # Datum der letzten Anmeldung ermitteln
-        $lastLogonDate = $user.LastLogonDate
-        
-        # Anzahl der Logins ermitteln
-        $logonCount = $user.LogonCount
-        
-        # Protokollieren der Informationen in die Logdatei
-        $logEntry = "Benutzername: $username | Passwortalter: $passwordAge | Datum der letzten Anmeldung: $lastLogonDate | Anzahl der Logins: $logonCount"
-        Add-Content -Path $LogFilePath -Value $logEntry
+        $LogFilePath = $($config["manualLogPath"])
+        $ADUsers = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount
+
+        # Aktuelles Ausführungsdatum generieren
+        $ExecutionDate = Get-Date -Format "yyyy-MM-dd"
+
+        # Header mit aktuellem Ausführungsdatum erstellen
+        $Header = 
+"
+------------------------------------------------------------------------------------------------
+Benutzername,Passwortgesetzt am,Datum der letzten Anmeldung,Anzahl der Logins -> $ExecutionDate
+------------------------------------------------------------------------------------------------"
+
+        # Header und Logeinträge zur Logdatei hinzufügen
+        $Header | Out-File -FilePath $LogFilePath -Append -Encoding UTF8
+
+        foreach ($User in $ADUsers) {
+            # Benutzername abrufen
+            $Username = $User.SamAccountName
+
+            # Passwortalter berechnen
+            $PasswordAge = $User.PasswordLastSet
+
+            # Datum der letzten Anmeldung abrufen
+            $LastLoginDate = $User.LastLogonDate
+
+            # Anzahl der Logins abrufen
+            $LoginCount = $User.LogonCount
+
+            # Aktuellen Logeintrag zusammenstellen
+            $LogEntry = "$Username,$PasswordAge,$LastLoginDate,$LoginCount"
+
+            # Logeintrag zur Logdatei hinzufügen
+            $LogEntry | Out-File -FilePath $LogFilePath -Append -Encoding UTF8
+        }
+
+        Write-Host "Die AD-Benutzerinformationen wurden erfolgreich zur Logdatei '$LogFilePath' hinzugefügt."
+        Standard-Log -FunctionName "manualLog"
     }
-    
-    Write-Host "AD-Informationen für alle Benutzer wurden manuell protokolliert." -ForegroundColor Green
-    Standard-Log -FunctionName "manualLog"
-
-}
-
-catch {
-    $errorMessage = $_.Exception.Message
-    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
-    Error-Log -FunctionName "manualLog" -ErrorMessage $errorMessage
-}
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Ausführen."
+        Error-Log -FunctionName "manualLog" -ErrorMessage $errorMessage
+    }
 
     Press-AnyKey
-    
 }
+
+
+
+
+
+
+
+
 
 # Gibt Infos Heraus, welche Daten man im Daily log mittels Planner momentan speichert
 # -> Passwortalter, Datum der letzten Anmeldung, Anzahl der Logins
@@ -251,7 +208,7 @@ function infoDailyLog {
 
     catch {
         $errorMessage = $_.Exception.Message
-        Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+        Write-Host "Es gab einen Fehler beim Ausführen."
         Error-Log -FunctionName "infoDailyLog" -ErrorMessage $errorMessage
     }
     Press-AnyKey
