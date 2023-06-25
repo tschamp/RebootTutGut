@@ -1,5 +1,5 @@
 # Pfad zur XML-Datei
-$xmlFilePath = "C:\Pfad\Zur\Datei.xml"
+$xmlFilePath = $($config["SchuelerXML"])
 
 # Importieren der XML-Datei
 $xml = [xml](Get-Content -Path $xmlFilePath)
