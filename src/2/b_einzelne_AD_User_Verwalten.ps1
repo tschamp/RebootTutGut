@@ -98,15 +98,46 @@ function Press-AnyKey {
     Clear-Console
 }
 
+function Standard-Log {
+    param (
+        [string]$FunctionName
+    )
+
+    $logFile =  $($config["succesfulLog"])
 
 
-# Funktioniert nicht, entsperrt einfach nicht digga
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    $logEntry = "$timestamp | Folgende Funktion wurde korrekt ausgeführt: $FunctionName"
+
+    Add-Content -Path $logFile -Value $logEntry
+}
+function Error-Log {
+    param (
+        [string]$FunctionName
+    )
+
+    $logFile =  $($config["errorLog"])
+
+
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    $logEntry = "$timestamp | Es gab einen Fehler bei der Funktion $FunctionName"
+
+    Add-Content -Path $logFile -Value $logEntry
+}
+
+
+
+# Funktioniert nicht, entsperrt einfach nicht 
 function unlockADUser {
     param (
         [Parameter(Mandatory=$true)]
         [string]$username
     )
-    
+
+
+try {
     $user = Get-ADUser -Identity $username
     if ($user) {
         if ($user.LockedOut) {
@@ -118,6 +149,16 @@ function unlockADUser {
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
+    Standard-Log -FunctionName "unlockADUser"
+
+}
+
+catch {
+    Write-Host "Es gab einen Fehler beim Ausführen."
+
+    Error-Log -FunctionName "unlockADUser"
+
+}
 
     Press-AnyKey
 }
@@ -130,18 +171,27 @@ function activateADUser {
         [Parameter(Mandatory=$true)]
         [string]$username
     )
-    
-    $user = Get-ADUser -Identity $username
-    if ($user) {
-        if (-not $user.Enabled) {
-            Enable-ADAccount -Identity $user
-            Write-Host "Das Konto für Benutzer $username wurde aktiviert."
+    try {
+        $user = Get-ADUser -Identity $username
+        if ($user) {
+            if (-not $user.Enabled) {
+                Enable-ADAccount -Identity $user
+                Write-Host "Das Konto für Benutzer $username wurde aktiviert."
+            } else {
+                Write-Host "Das Konto für Benutzer $username ist bereits aktiviert."
+            }
         } else {
-            Write-Host "Das Konto für Benutzer $username ist bereits aktiviert."
+            Write-Host "Benutzer $username wurde nicht gefunden."
         }
-    } else {
-        Write-Host "Benutzer $username wurde nicht gefunden."
+        Standard-Log -FunctionName "activateADUser"
+
     }
+
+    catch {
+        Write-Host "Es gab einen Fehler beim Ausführen."
+        Error-Log -FunctionName "activateADUser"
+    }
+   
     Press-AnyKey
 }
 
@@ -152,7 +202,7 @@ function resetADpwd {
         [Parameter(Mandatory=$true)]
         [string]$username
     )
-    
+    try {
     $user = Get-ADUser -Identity $username
     if ($user) {
         $newPassword = Read-Host "Geben Sie das neue Passwort für Benutzer $username ein" -AsSecureString
@@ -174,6 +224,16 @@ function resetADpwd {
     } else {
         Write-Host "Benutzer $username wurde nicht gefunden."
     }
+    Standard-Log -FunctionName "resetADpwd"
+
+
+}
+
+catch {
+    Write-Host "Es gab einen Fehler beim Ausführen."
+    Error-Log -FunctionName "resetADpwd"
+
+}
     Press-AnyKey
 }
 
