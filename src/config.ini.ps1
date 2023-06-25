@@ -13,7 +13,7 @@ $config = @{
     mainScriptPath = "./main.ps1"
     SchuelerXML  = "files\schueler.xml"
     InitPw       = "bztf.001"
-    OUPath       = "OU=schueler,DC=reboottutgut,DC=local"
+    OUPath       = "CN=schueler,DC=reboottutgut,DC=local"
     OULernende   = "Lernende"
     OUKlasse     = "Klassengruppen"
     LogFileUser  = "C:\tmp\users.log"
