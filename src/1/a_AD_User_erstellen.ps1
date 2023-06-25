@@ -1,5 +1,5 @@
 # Pfade zur XML-Datei und zum Active Directory-Modul
-$xmlFilePath = "C:\Users\timo.schreiber\Documents\GitHub\RebootTutGut\files\schueler.xml"
+$xmlFilePath = $($config["SchuelerXML"])
 
 # Importieren des Active Directory-Moduls
 Import-Module ActiveDirectory
