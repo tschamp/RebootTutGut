@@ -85,12 +85,38 @@ function Press-AnyKey {
     Clear-Console
 }
 
+function Standard-Log {
+    param (
+        [string]$FunctionName
+    )
 
+    $logFile =  $($config["succesfulLog"])
+
+
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    $logEntry = "$timestamp | Folgende Funktion wurde korrekt ausgeführt: $FunctionName"
+
+    Add-Content -Path $logFile -Value $logEntry
+}
+function Error-Log {
+    param (
+        [string]$FunctionName,
+        [string]$ErrorMessage
+    )
+
+    $logFile =  $($config["errorLog"])
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    $logEntry = "$timestamp | Es gab einen Fehler bei der Funktion $FunctionName. Fehlermeldung: $ErrorMessage"
+
+    Add-Content -Path $logFile -Value $logEntry
+}
 
 
 function Show-NoPassword {
     $users = Get-ADUser -Filter {PasswordNeverExpires -eq $true -and PasswordNotRequired -eq $true} -Properties Name, SamAccountName
-
+try {
     if ($users) {
         Write-Host "Benutzer ohne Passwort:"
         $users | Out-GridView 
@@ -99,12 +125,23 @@ function Show-NoPassword {
         Write-Host "Keine Benutzer ohne Passwort gefunden."
 
     }
-    Press-AnyKey
+    Standard-Log -FunctionName "Show-NoPassword"
+} 
 
+catch {
+    $errorMessage = $_.Exception.Message
+    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+    Error-Log -FunctionName "Show-NoPassword" -ErrorMessage $errorMessage
+}
+
+Press-AnyKey
 }
 
 
+
 function Show-NeverExpire {
+
+try {
     $users = Get-ADUser -Filter {PasswordNeverExpires -eq $true} -Properties Name, SamAccountName
 
     if ($users) {
@@ -113,12 +150,24 @@ function Show-NeverExpire {
     } else {
         Write-Host "Keine Benutzer gefunden, bei denen das Passwort nicht abläuft."
     }
+    Standard-Log -FunctionName "Show-NeverExpire"
+
+}
+
+catch {
+    $errorMessage = $_.Exception.Message
+    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+    Error-Log -FunctionName "Show-NeverExpire" -ErrorMessage $errorMessage
+}
+
 
     Press-AnyKey
 }
 
 
 function Show-DeactivatedandLocked {
+
+    try {
     $lockedUsers = Search-ADAccount -LockedOut | Get-ADUser -Properties Name, SamAccountName
     $disabledUsers = Get-ADUser -Filter {Enabled -eq $false} -Properties Name, SamAccountName
 
@@ -131,6 +180,17 @@ function Show-DeactivatedandLocked {
         Write-Host "Keine gesperrten oder deaktivierten Benutzer gefunden."
 
     }
+    Standard-Log -FunctionName "Show-DeactivatedandLocked"
+
+
+}
+
+catch {
+    $errorMessage = $_.Exception.Message
+    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+    Error-Log -FunctionName "Show-DeactivatedandLocked" -ErrorMessage $errorMessage
+
+}
     Press-AnyKey
 
 }

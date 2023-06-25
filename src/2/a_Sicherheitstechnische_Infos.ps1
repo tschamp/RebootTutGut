@@ -96,9 +96,36 @@ function Press-AnyKey {
     Clear-Console
 }
 
+function Standard-Log {
+    param (
+        [string]$FunctionName
+    )
+
+    $logFile =  $($config["succesfulLog"])
+
+
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    $logEntry = "$timestamp | Folgende Funktion wurde korrekt ausgeführt: $FunctionName"
+
+    Add-Content -Path $logFile -Value $logEntry
+}
+function Error-Log {
+    param (
+        [string]$FunctionName,
+        [string]$ErrorMessage
+    )
+
+    $logFile =  $($config["errorLog"])
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    $logEntry = "$timestamp | Es gab einen Fehler bei der Funktion $FunctionName. Fehlermeldung: $ErrorMessage"
+
+    Add-Content -Path $logFile -Value $logEntry
+}
 
 # Macht mit einem Taskplanner täglich einen Log von den Vorgaben
-function Daily-Log {
+function dailyLog {
 
     [Parameter(Mandatory = $true)]
     [DateTime]$ScheduledTime
@@ -112,6 +139,7 @@ function Daily-Log {
     # Alle Benutzer aus dem Active Directory abrufen
     $users = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount -ErrorAction Stop
     
+    try {
     # Für jeden Benutzer Informationen protokollieren
     foreach ($user in $users) {
         $username = $user.SamAccountName
@@ -144,16 +172,24 @@ $TaskPrincipal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -Logon
 Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Settings $TaskSettings -Principal $TaskPrincipal -Force
 
 Write-Host "Task wurde erstellt bzw. aktualisiert." -ForegroundColor Green
+
+Standard-Log -FunctionName "dailyLog"
+
+}
+
+catch {
+    $errorMessage = $_.Exception.Message
+    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+    Error-Log -FunctionName "dailyLog" -ErrorMessage $errorMessage
+}
+
+
 Press-AnyKey
+}
 
     
-}
 
-# 
-# Funktion zum Ändern des Zeitpunkts für das tägliche Log
-function Change-LogTime {
-  
-}
+
 
 
 # Skript um jetzt direkt einen Log zu erstellen im Verzeichnis  $($config["manualLogPath"]
@@ -166,6 +202,7 @@ function manualLog {
     # Alle Benutzer aus dem Active Directory abrufen
     $users = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount -ErrorAction Stop
     
+    try {
     # Für jeden Benutzer Informationen protokollieren
     foreach ($user in $users) {
         $username = $user.SamAccountName
@@ -185,6 +222,15 @@ function manualLog {
     }
     
     Write-Host "AD-Informationen für alle Benutzer wurden manuell protokolliert." -ForegroundColor Green
+    Standard-Log -FunctionName "manualLog"
+
+}
+
+catch {
+    $errorMessage = $_.Exception.Message
+    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+    Error-Log -FunctionName "manualLog" -ErrorMessage $errorMessage
+}
 
     Press-AnyKey
     
@@ -193,6 +239,21 @@ function manualLog {
 # Gibt Infos Heraus, welche Daten man im Daily log mittels Planner momentan speichert
 # -> Passwortalter, Datum der letzten Anmeldung, Anzahl der Logins
 function infoDailyLog {
+    try {
+        Write-Host "Es werden folgende Infos von AD Benutzer geloggt:"
+        Write-Host " 
+        Passwortalter
+        Datum der letzten Anmeldung
+        Anzahl der Logins"
+        Standard-Log -FunctionName "infoDailyLog"
+
+    }
+
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+        Error-Log -FunctionName "infoDailyLog" -ErrorMessage $errorMessage
+    }
     Press-AnyKey
    
 }

@@ -9,6 +9,8 @@
 
 . ".\config.ini.ps1"
 
+
+
 function Show-MainMenu {
     $Host.UI.RawUI.ForegroundColor = "Green" 
     Write-Host @"
@@ -148,7 +150,6 @@ function Show-UserFunctionsMenu {
 }
 
 
-
 function AD-User-Erstellen {
     Write-Host "Rufe das AD-User-Erstellungsskript auf..."
     . "$($config["createUsers"])"
@@ -183,7 +184,5 @@ function AD-User-Uebersicht {
     Write-Host "Rufe das AD-User-Uebersichtskript auf..."
     . "$($config["overviewUser"])"
 }
-
-
 ## ruft die funktion konsole aus, in dieser wird dann das main menu ausgerufen und so weiter dies das ananas
 Clear-Console
