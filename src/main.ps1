@@ -80,11 +80,11 @@ function Show-GroupFunctionsMenu {
         }
         '3' {
             Write-Host "Option Gruppen erstellen mit XML wurde gewählt"
-            AD-Gruppen-Erstellen
+            AD-Gruppen-Erstellen assignADUserToADGroup
         }
         '4' {
             Write-Host "Option Gruppen deaktivieren mit XML wurde gewählt"
-            AD-Gruppen-Deaktivieren
+            AD-Gruppen-Deaktivieren assignADUserToADGroup
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
