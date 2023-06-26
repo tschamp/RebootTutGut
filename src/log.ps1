@@ -32,16 +32,16 @@ function Write-Log {
     # Ordner "log" erstellen, falls bereits existiert, Fehler nicht ausgeben
     New-Item log -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     # Datei "all.log" erstellen, falls bereits existiert, Fehler nicht ausgeben
-    New-Item $config.AllLog -ErrorAction SilentlyContinue | Out-Null
+    New-Item $($config["AllLog"])-ErrorAction SilentlyContinue | Out-Null
     # Datei "info.log" erstellen, falls bereits existiert, Fehler nicht ausgeben
-    New-Item $config.InfoLog -ErrorAction SilentlyContinue | Out-Null
+    New-Item $($config["InfoLog"]) -ErrorAction SilentlyContinue | Out-Null
     # Datei "warn.log" erstellen, falls bereits existiert, Fehler nicht ausgeben
-    New-Item $config.WarnLog -ErrorAction SilentlyContinue | Out-Null
+    New-Item $($config["WarnLog"]) -ErrorAction SilentlyContinue | Out-Null
     # Datei "error.log" erstellen, falls bereits existiert, Fehler nicht ausgeben
-    New-Item $config.ErrorLog -ErrorAction SilentlyContinue | Out-Null
+    New-Item $($config["ErrorLogs"]) -ErrorAction SilentlyContinue | Out-Null
 
     # Linie zu "all.log" hinzufuegen
-    Add-Content $config.AllLog -Value $line
+    Add-Content $($config["AllLog"]) -Value $line
     # Log-Nachricht in Konsole ausgeben
     Write-Host $Message
 
@@ -49,15 +49,15 @@ function Write-Log {
     switch ($Level) {
         # INFO, Linie zu "info.log" hinzufuegen
         INFO {
-            Add-Content $config.InfoLog -Value $line
+            Add-Content $($config["InfoLog"]) -Value $line
         }
         # WARN, Linie zu "warn.log" hinzufuegen
         WARN {
-            Add-Content $config.WarnLog -Value $line
+            Add-Content $($config["WarnLog"])-Value $line
         }
         # ERROR, Linie zu "error.log" hinzufuegen
         ERROR {
-            Add-Content $config.ErrorLog -Value $line
+            Add-Content $($config["ErrorLogs"]) -Value $line
         }
     }
 }

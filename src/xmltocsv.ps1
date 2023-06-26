@@ -6,12 +6,13 @@
 
 function xmlToCsv {
     # XML auslesen
-    [xml] $SchuelerXML = Get-Content -Path $config.SchuelerXml
+    [xml] $SchuelerXML = Get-Content -Path $($config["SchuelerXML"])
+
     # Logging
     Write-Log -Level INFO -Message "XML eingelesen"
 
     # CSV-Headers hinzufuegen
-    $SchuelerXML.Objs.Obj.MS.S.N.GetValue(0) | Out-File -Encoding utf8 -FilePath $config.SchuelerCsv
+    $SchuelerXML.Objs.Obj.MS.S.N.GetValue(0) | Out-File -Encoding utf8 -FilePath $($config["SchuelerCSV"])
     # Logging
     Write-Log -Level INFO -Message "CSV Headers hinzugefuegt"
 
@@ -29,7 +30,7 @@ function xmlToCsv {
         # in jeder Linie, Umlaute ersetzen
         $line = $line -ireplace 'ä', 'ae' -ireplace 'ö', 'oe' -ireplace 'ü', 'ue' -ireplace 'è', 'e' -ireplace 'é', 'e'
         # Jede Linie der Datei hinzufuegen
-        $line | Out-File -Encoding utf8 -FilePath $config.SchuelerCsv -Append
+        $line | Out-File -Encoding utf8 -FilePath $($config["SchuelerCSV"])-Append
         # Logging
         Write-Log -Level INFO -Message "$current/$total Linie zu CSV hinzugefuegt"
         # momentane zeile
