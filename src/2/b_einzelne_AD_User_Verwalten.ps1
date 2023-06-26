@@ -118,14 +118,7 @@ function unlockADUser {
 
     try {
         $user = Get-ADUser -Identity $username
-        if ($user) {
-            if ($user.LockedOut) {
-                Unlock-ADAccount -Identity $user
-                Write-Host "Das Konto für Benutzer $username wurde entsperrt."
-            } else {
-                Write-Host "Das Konto für Benutzer $username ist bereits entsperrt."
-            }
-        } 
+        Unlock-ADAccount -Identity $user
 
         Standard-Log -FunctionName "unlockADUser"
     }
@@ -145,16 +138,7 @@ function activateADUser {
 
     try {
         $user = Get-ADUser -Identity $username
-        if ($user) {
-            if (-not $user.Enabled) {
-                Enable-ADAccount -Identity $user
-                Write-Host "Das Konto für Benutzer $username wurde aktiviert."
-            } else {
-                Write-Host "Das Konto für Benutzer $username ist bereits aktiviert."
-            }
-        } else {
-            Write-Host "Benutzer $username wurde nicht gefunden."
-        }
+        Enable-ADAccount -Identity $user
         Standard-Log -FunctionName "activateADUser"
     }
     catch {
