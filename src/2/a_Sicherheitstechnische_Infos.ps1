@@ -42,7 +42,7 @@ function Show-MainMenu {
         '1' {
             Write-Host "Das Skript um den Dailylog zu aktualisieren wird ausgefuehrt.."
             Start-Sleep -Seconds 0.5
-            changeLogTime
+            dailyLog
             Press-AnyKey
             
         }
@@ -126,7 +126,46 @@ function Error-Log {
 
 # Macht mit einem Taskplanner täglich einen Log von den Vorgaben
 function dailyLog {
-  
+
+    try {
+# Vorgegebene Werte
+$taskName = "MeineAufgabe"
+$scriptPath = $($config["logOnly"])
+
+# Benutzer nach der Ausführungszeit fragen
+$triggerTime = Read-Host "Wann sollen die Informationen geloggt werden? (im Format 'HH:mm'):"
+
+# Überprüfen, ob eine Aufgabe mit dem angegebenen Namen bereits vorhanden ist
+$existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+
+if ($existingTask) {
+    # Eine vorhandene Aufgabe wurde gefunden, diese löschen
+    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
+}
+
+# Neue Aufgabe erstellen
+$action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
+$trigger = New-ScheduledTaskTrigger -Daily -At $triggerTime
+$settings = New-ScheduledTaskSettingsSet
+$task = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings
+
+# Aufgabe sofort ausführen
+Start-ScheduledTask -TaskName $taskName
+
+Write-Host "Die Task wurde erfolgreich erstellt um Logdaten zu speichern"
+Standard-Log -FunctionName "dailyLog"
+
+}
+
+catch{
+    $errorMessage = $_.Exception.Message
+    Write-Host "Es gab einen Fehler beim Ausführen."
+    Error-Log -FunctionName "dailyLog" -ErrorMessage $errorMessage
+}
+
+
+Press-AnyKey
+
 
 }
     
@@ -136,7 +175,7 @@ function dailyLog {
 
 # Skript um jetzt direkt einen Log zu erstellen im Verzeichnis  $($config["manualLogPath"]
 function manualLog {
-    try {
+    try { 
         $LogFilePath = $($config["manualLogPath"])
         $ADUsers = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount
 
