@@ -13,14 +13,14 @@
 
 function deactivateADUserAccount {
     # Definieren von OU Pfad $fullpath
-    $fullPath = $config.OULernende + "," + $config.OUPath
+    $fullPath = $($config["OULernende"]) + "," + $($config["OUPath"])
     # Foreach $user in $fullPath (OU Lernende)
     foreach ($user in ((Get-ADUser -Filter "*" -SearchBase $fullPath).SamAccountName)) {
         # $userExists auf $false setzen (Default)
         $userExists = $false
 
         # Csv importieren mit Delimiter ";"
-        import-Csv $config.SchuelerCsv -Delimiter ";" | foreach {
+        import-Csv $($config["SchuelerCSV"])  -Delimiter ";" | foreach {
             # Vorname von CSV in Variable $vorname speichern
             $vorname = ($_.Vorname)
             # Name von CSV in Variable $nachname speichern
