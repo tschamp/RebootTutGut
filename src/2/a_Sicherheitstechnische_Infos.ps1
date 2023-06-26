@@ -31,33 +31,37 @@ function Show-MainMenu {
  SECURITY LOGS
  ----------------------------------------------------------------------
  Welche Aktion moechtest du ausfuehren? Gib die entsprechende Nummer ein:
-[1] Daily log aktualisieren
-[2] Manuellen Log
+[1] Daily log Aufgabe erstellen
+[2] Manuellen Log erstellen
 [3] Infos zum Taeglichen Log
+[4] Alte Daily Log Aufgabe löschen
 [E] Zum Hauptmenue
 [X] Programm beenden
 "@
     $selection = Read-Host "Auswahl"
     switch ($selection) {
         '1' {
-            Write-Host "Das Skript um den Dailylog zu aktualisieren wird ausgefuehrt.."
+            Write-Host "Das Skript um den Dailylog zu erstellen wird ausgefuehrt.."
             Start-Sleep -Seconds 0.5
             dailyLog
-            Press-AnyKey
             
         }
         '2' {
             Write-Host "Das Skript um einen manuellen Log zu machen wird ausgefuehrt"
             Start-Sleep -Seconds 0.5
             manualLog
-            Press-AnyKey
         }
 
         '3' {
             Write-Host "Das Skript um Infos anzuzeigen wird ausgefuehrt"
             Start-Sleep -Seconds 0.5
             infoDailyLog 
-            Press-AnyKey
+        }
+
+        '4' {
+            Write-Host "Das Skript um Aufgaben zu löschen wird ausgefuehrt"
+            Start-Sleep -Seconds 0.5
+            deleteLogTask
         }
 
         'E' {
@@ -128,20 +132,12 @@ function Error-Log {
 function dailyLog {
 
     try {
-# Vorgegebene Werte
-$taskName = "MeineAufgabe"
-$scriptPath = $($config["logOnly"])
+	# Vorgegebene Werte
+$taskName = "_Skript"
+$scriptPath = "C:\Temp\a_dailyLogOnly.ps1"
 
 # Benutzer nach der Ausführungszeit fragen
 $triggerTime = Read-Host "Wann sollen die Informationen geloggt werden? (im Format 'HH:mm'):"
-
-# Überprüfen, ob eine Aufgabe mit dem angegebenen Namen bereits vorhanden ist
-$existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-
-if ($existingTask) {
-    # Eine vorhandene Aufgabe wurde gefunden, diese löschen
-    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-}
 
 # Neue Aufgabe erstellen
 $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
@@ -149,10 +145,18 @@ $trigger = New-ScheduledTaskTrigger -Daily -At $triggerTime
 $settings = New-ScheduledTaskSettingsSet
 $task = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings
 
-# Aufgabe sofort ausführen
-Start-ScheduledTask -TaskName $taskName
+# kopiert das Skript für den Loginhalt nach C temp für absoluten Pfad
+$destinationPath = "C:\Temp"
+if (-not (Test-Path $destinationPath)) {
+    New-Item -ItemType Directory -Path $destinationPath | Out-Null
+}
+
+Copy-Item -Path $($config["logOnly"]) -Destination $destinationPath -Force
+
+
 
 Write-Host "Die Task wurde erfolgreich erstellt um Logdaten zu speichern"
+Write-Host "Du findest unter C:\Temp die Logdatei"
 Standard-Log -FunctionName "dailyLog"
 
 }
@@ -255,7 +259,29 @@ function infoDailyLog {
 }
 
 
+function deleteLogTask {
+    try {
+        $TaskName = "_Skript"
+        # Überprüfen, ob eine Aufgabe mit dem angegebenen Namen vorhanden ist
+        $existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 
+        if ($existingTask) {
+            # Die Aufgabe löschen
+            Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+            Write-Host "Die Aufgabe '$TaskName' wurde erfolgreich gelöscht."
+            Standard-Log -FunctionName "Remove-ScheduledTask"
+        } else {
+            Write-Host "Es wurde keine Aufgabe mit dem Namen '$TaskName' gefunden."
+        }
+    }
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Löschen der Aufgabe."
+        Error-Log -FunctionName "Remove-ScheduledTask" -ErrorMessage $errorMessage
+    }
+
+    Press-AnyKey
+}
 
 
 

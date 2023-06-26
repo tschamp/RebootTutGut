@@ -1,9 +1,7 @@
-. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "config.ini.ps1")
-
 
 Import-Module ActiveDirectory
 
-$LogFilePath = $($config["dailyLogPath"])
+$LogFilePath = "C:\temp\daily.log"
         $ADUsers = Get-ADUser -Filter * -Properties PasswordLastSet, LastLogonDate, LogonCount
 
         # Aktuelles Ausführungsdatum generieren
