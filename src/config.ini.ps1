@@ -20,6 +20,10 @@ $config = @{
     LogFileUser  = "C:\tmp\users.log"
     LogFileGroup = "C:\tmp\groups.log"
     ClassFolder  = "C:\BZTF\Klassen"
+    AllLog       = ".\log\all.log"
+    InfoLog      = ".\log\info.log"
+    WarnLog      = ".\log\warn.log"
+    ErrorLogs     = ".\log\error.log"
     
     # Einzelne Skripts
     createUsers = "1\a_AD_User_erstellen.ps1"
