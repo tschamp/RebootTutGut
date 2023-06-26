@@ -17,7 +17,7 @@
 
 function createADGroup {
     # OU Pfad definieren
-    $fullPath = $config.OUKlasse + "," + $config.OUPath
+    $fullPath = $($config["OUKlasse"]) + "," + $($config["OUPath"])
 
     # Variable $errorOccured auf $false setzen
     $errorOccured = $false
@@ -28,7 +28,7 @@ function createADGroup {
     }
     # Wenn OU $fullpath nicht vorhanden (Fehler) OU erstellen
     catch {
-        New-ADOrganizationalUnit -Name "Klassengruppen" -Path $config.OUPath
+        New-ADOrganizationalUnit -Name "Klassengruppen" -Path $($config["OUPath"])
         # $errorOccured auf $true setzen f�r Logging
         $errorOccured = $true
     }
@@ -46,7 +46,7 @@ function createADGroup {
         Write-Log -Level WARN -Message "OU Klassengruppen bereits vorhanden"
     }
     # Csv importieren mit Delimiter ";"
-    import-Csv $config.SchuelerCsv -Delimiter ";" | foreach {
+    import-Csv $($config["SchuelerCSV"]) -Delimiter ";" | foreach {
         # Vorname von CSV in Variable $vorname speichern
         $vorname = ($_.Vorname)
         # Name von CSV in Variable $nachname speichern
