@@ -12,7 +12,7 @@
 
 function createADUserAccount {
     # $fullPath definieren
-    $fullPath = $config.OULernende + "," + $config.OUPath
+    $fullPath = $($config["OULernende"]) + "," + $($config["OUPath"])
     # $errorOccured auf $false setzen
     $errorOccured = $false
     # Wenn OU $fullpath vorhanden, dann mache nichts
@@ -22,7 +22,7 @@ function createADUserAccount {
     # Wenn OU $fullpath nicht vorhanden, dann
     catch {
         # OU "Lernende" erstellen
-        New-ADOrganizationalUnit -Name "Lernende" -Path $config.OUPath
+        New-ADOrganizationalUnit -Name "Lernende" -Path $($config["OUPath"])
         # $errorOccured auf $true setzen
         $errorOccured = $true
     }
@@ -41,7 +41,7 @@ function createADUserAccount {
 
 
     # Csv importieren mit Delimiter ";"
-    import-Csv $config.SchuelerCsv -Delimiter ";" | foreach {
+    import-Csv $($config["SchuelerCSV"]) -Delimiter ";" | foreach {
         # Vorname von CSV in Variable $vorname speichern
         $vorname = ($_.Vorname)
         # Name von CSV in Variable $nachname speichern

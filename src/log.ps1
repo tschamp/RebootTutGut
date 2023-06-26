@@ -1,6 +1,9 @@
 
 # Import config
-./src/config.ini.ps1
+# Import config
+. ".\config.ini.ps1"
+
+
 
 function Write-Log {
     # Erlaubt es diese Funktion wie ein Cmdlet zu nutzen
