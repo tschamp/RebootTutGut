@@ -17,7 +17,7 @@
 
 function createADGroup {
     # OU Pfad definieren
-    $fullPath = $($config["OUKlasse"]) + "," + $($config["OUPath"])
+    $fullPath = $config.OUKlasse + "," + $config.OUPath
 
     # Variable $errorOccured auf $false setzen
     $errorOccured = $false
@@ -28,8 +28,8 @@ function createADGroup {
     }
     # Wenn OU $fullpath nicht vorhanden (Fehler) OU erstellen
     catch {
-        New-ADOrganizationalUnit -Name "Klassengruppen" -Path $($config["OUPath"])
-        # $errorOccured auf $true setzen f�r Logging
+        New-ADOrganizationalUnit -Name "Klassengruppen" -Path $config.OUPath
+        # $errorOccured auf $true setzen für Logging
         $errorOccured = $true
     }
 
@@ -46,7 +46,7 @@ function createADGroup {
         Write-Log -Level WARN -Message "OU Klassengruppen bereits vorhanden"
     }
     # Csv importieren mit Delimiter ";"
-    import-Csv $($config["SchuelerCSV"]) -Delimiter ";" | foreach {
+    import-Csv $config.SchuelerCsv -Delimiter ";" | foreach {
         # Vorname von CSV in Variable $vorname speichern
         $vorname = ($_.Vorname)
         # Name von CSV in Variable $nachname speichern
@@ -65,7 +65,7 @@ function createADGroup {
         # Wenn AD Gruppe "BZTF_$class" nicht vorhanden, dann erstellen Gruppe "BZTF_$class" in $fullpath
         catch {
             New-ADGroup -Name "BZTF_$class" -SamAccountName "BZTF_$class" -GroupCategory Distribution -GroupScope Global -DisplayName "BZTF_$class" -Path $fullPath -Description "Schueler der Klasse $class" 
-            # $errorOccured auf $true setzen f�r Logging
+            # $errorOccured auf $true setzen für Logging
             $errorOccured = $true
         }
         
@@ -83,32 +83,5 @@ function createADGroup {
         }
     }
 }
-
-# Pfad zur XML-Datei
-$xmlFilePath = $($config["SchuelerXML"])
-
-# Importieren der XML-Datei
-$xml = [xml](Get-Content -Path $xmlFilePath)
-
-
-# Durchlaufe alle Objekte in der XML
-foreach ($obj in $xml.Objs.Obj) {
-    # Extrahiere die Werte für Name, Vorname, Benutzername, Klasse und Klasse2
-    $values = $obj.MS.S -split ';'
-
-    # Erstelle den Gruppennamen basierend auf der Klasse
-    $klasse = $values[3]
-    $gruppenname = "Gruppe_$klasse"
-
-    # Erstelle die Gruppe, falls sie noch nicht existiert
-    if (-not (Get-ADGroup -Filter "Name -eq '$gruppenname'")) {
-        New-ADGroup -Name $gruppenname -GroupScope Global
-    }
-
-    # Füge den Benutzer zur Gruppe hinzu
-    $benutzername = $values[2]
-    Add-ADGroupMember -Identity $gruppenname -Members $benutzername
-}
-
 
 createADGroup
