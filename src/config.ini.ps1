@@ -10,16 +10,19 @@
 
 # HashTable der Variable $config mit den Keys und Values.
 $config = @{
-    mainScriptPath = "./main.ps1"
-    SchuelerXML  = "files\schueler.xml"
-    InitPw       = "bztf.001"
-    OUPath       = "CN=schueler,DC=reboottutgut,DC=local"
-    OULernende   = "Lernende"
-    OUKlasse     = "Klassengruppen"
-    LogFileUser  = "C:\tmp\users.log"
-    LogFileGroup = "C:\tmp\groups.log"
-    ClassFolder  = "C:\BZTF\Klassen"
-    
+
+    SchuelerXml  = ".\files\schueler.xml"
+    SchuelerCsv  = ".\files\schueler.csv"
+    InitPw       = "bztf.001" | ConvertTo-SecureString -AsPlainText -Force
+    OUPath       = "OU=Schueler,DC=reboottutgut,DC=local"
+    OULernende   = "OU=Schueler"
+    OUKlasse     = "OU=Klassengruppen"
+    AllLog       = ".\log\all.log"
+    InfoLog      = ".\log\info.log"
+    WarnLog      = ".\log\warn.log"
+    ErrorLog     = ".\log\error.log"
+    ClassFolder  = "C:\BZTF\Klassen\"
+
     # Einzelne Skripts
     createUsers = "1\a_AD_User_erstellen.ps1"
     deactivateUsers = "1\a_AD_User_deaktivieren.ps1"
@@ -27,14 +30,10 @@ $config = @{
     deactivateGroups = "1\b_AD_Gruppen_deaktivieren.ps1"
 
     securityLogs = "2\a_Sicherheitstechnische_Infos.ps1"
-    manualLogPath = "..\logs\manual.log"
-    dailyLogPath = "..\logs\daily.log"
+    manualLogPath = "2\manualLogs"
+    dailylogPath = "2\dailyLogs"
     manageUser = "2\b_einzelne_AD_User_Verwalten.ps1"
     overviewUser = "2\c_AD_Uebersicht"
-
-    #log
-    succesfulLog = "..\logs\succesful.log"
-    errorLog = "..\logs\error.log"
 
     # hacker
     art1 = 
