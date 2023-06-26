@@ -13,14 +13,14 @@
 
 function deleteADGroup {
     # fullPath definieren (OU Klassengruppe) 
-    $fullPath = $config.OUKlasse + "," + $config.OUPath
+    $fullPath = $($config["OUKlasse"]) + "," + $($config["OUPath"])
     # F�r jede Gruppe in $fullPath (OU Klassenablage)
     foreach ($group in ((Get-ADGroup -Filter "*" -SearchBase $fullPath).Name)) {
         # $groupExists auf $false setzen
         $groupExists = $false
 
         # Csv importieren mit Delimiter ";"
-        import-Csv $config.SchuelerCsv -Delimiter ";" | foreach {
+        import-Csv $($config["SchuelerCSV"]) -Delimiter ";" | foreach {
             # Vorname von CSV in Variable $vorname speichern
             $vorname = ($_.Vorname)
             # Name von CSV in Variable $nachname speichern
