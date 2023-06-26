@@ -6,69 +6,165 @@
 # Bemerkungen: funktioniert noch nicht so ganz
 #--------------------------------------------------------------------------------
 
+Import-Module ActiveDirectory
 
-function Unlock-ADUserAccount {
-     param(
-         [Parameter(Mandatory=$true)]
-         [string]$Username
-     )
- 
-     try {
-         $user = Get-ADUser -Identity $Username
-         $user | Unlock-ADAccount
-         Write-Output "Das Konto '$Username' wurde entsperrt."
-     }
-     catch {
-         Write-Error "Fehler: Das Konto '$Username' konnte nicht entsperrt werden."
-     }
- }
- 
- function Enable-ADUserAccount {
-     param(
-         [Parameter(Mandatory=$true)]
-         [string]$Username
-     )
- 
-     try {
-         $user = Get-ADUser -Identity $Username
-         $user | Enable-ADAccount
-         Write-Output "Das Konto '$Username' wurde aktiviert."
-     }
-     catch {
-         Write-Error "Fehler: Das Konto '$Username' konnte nicht aktiviert werden."
-     }
- }
- 
- function Reset-ADUserPassword {
-     param(
-         [Parameter(Mandatory=$true)]
-         [string]$Username
-     )
- 
-     try {
-         $user = Get-ADUser -Identity $Username
-         $newPassword = Read-Host -AsSecureString "Geben Sie das neue Passwort ein"
-         $user | Set-ADAccountPassword -NewPassword $newPassword -Reset
-         Write-Output "Das Passwort fuer das Konto '$Username' wurde zurueckgesetzt."
-     }
-     catch {
-         Write-Error "Fehler: Das Passwort fuer das Konto '$Username' konnte nicht zurueckgesetzt werden."
-     }
- }
- 
- $targetUser = Read-Host "Geben Sie den Benutzernamen ein"
- 
- Write-Output "Welche Aktion moechten Sie fuer den Benutzer '$targetUser' ausfuehren?"
- Write-Output "1. Konto entsperren"
- Write-Output "2. Konto aktivieren"
- Write-Output "3. Passwort zuruecksetzen"
- 
- $action = Read-Host "Geben Sie die entsprechende Zahl fuer die gewuenschte Aktion ein"
- 
- switch ($action) {
-     '1' { Unlock-ADUserAccount -Username $targetUser }
-     '2' { Enable-ADUserAccount -Username $targetUser }
-     '3' { Reset-ADUserPassword -Username $targetUser }
-     default { Write-Error"Ungueltige Auswahl." }
- }
- 
+## wichtig
+## ist der Pfad für die Konfigurationsdatei
+## Der Pfad ist so kompliziert, damit er von überall funktioniert, also auch vom Hauptskript oder als eigenes Skript
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "config.ini.ps1")
+
+## Für einzelne AD-Benutzer:
+## Konto entsperren
+## Konto aktivieren
+## Passwort zurücksetzen
+
+function Show-MainMenu {
+    $Host.UI.RawUI.ForegroundColor = "Green" 
+    Write-Host @"
+ EINZELNE USER VERWALTUNG
+ ----------------------------------------------------------------------
+ Welche Aktion möchtest du ausführen? Gib die entsprechende Nummer ein:
+[1] Konto entsperren
+[2] Konto aktivieren
+[3] Passwort zurücksetzen
+[E] Zum Hauptmenü
+[X] Programm beenden
+"@
+    $selection = Read-Host "Auswahl"
+    switch ($selection) {
+        '1' {
+            Write-Host "Das Skript zum Entsperren eines Benutzers wird ausgeführt"
+            Start-Sleep -Seconds 0.5
+            $adUser = Read-Host "Wie heißt der Benutzer"
+            unlockADUser -username $adUser
+            Press-AnyKey
+        }
+        '2' {
+            Write-Host "Das Skript zum Aktivieren eines Benutzers wird ausgeführt"
+            Start-Sleep -Seconds 0.5
+            $adUser = Read-Host "Wie heißt der Benutzer"
+            activateADUser -username $adUser
+            Press-AnyKey
+        }
+        '3' {
+            Write-Host "Das Skript zum Zurücksetzen des Passworts wird ausgeführt"
+            Start-Sleep -Seconds 0.5
+            $adUser = Read-Host "Wie heißt der Benutzer"
+            resetADpwd -username $adUser
+            Press-AnyKey
+        }
+        'E' {
+            $Host.UI.RawUI.ForegroundColor = "Yellow"
+            Write-Host "Wechsle zum Hauptmenü..."
+            . "$($config["mainScriptPath"])"
+            Start-Sleep -Seconds 5
+        }
+        'X' {
+            $Host.UI.RawUI.ForegroundColor = "Red" 
+            Write-Host "Programm wird beendet."
+        }
+        default {
+            Write-Host "Ungültige Auswahl."
+            Clear-Console
+        }
+    }
+}
+
+function Clear-Console {
+    $Host.UI.RawUI.ForegroundColor = "Yellow"
+    Start-Sleep -Seconds 1.25
+    Clear-Host
+    Show-MainMenu
+}
+
+function Press-AnyKey {
+    $Host.UI.RawUI.ForegroundColor = "White"
+    Write-Host @"
+    ----------------------------------------------------------------
+    Drücke eine beliebige Taste, um zum Menü zurückzukehren.
+"@
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    Clear-Console
+}
+
+function Standard-Log {
+    param (
+        [string]$FunctionName
+    )
+
+    $logFile =  $($config["succesfulLog"])
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "$timestamp | Die Funktion '$FunctionName' wurde erfolgreich ausgeführt."
+    Add-Content -Path $logFile -Value $logEntry
+}
+
+function Error-Log {
+    param (
+        [string]$FunctionName,
+        [string]$ErrorMessage
+    )
+
+    $logFile =  $($config["errorLog"])
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "$timestamp | Bei der Funktion '$FunctionName' ist ein Fehler aufgetreten. Fehlermeldung: $ErrorMessage"
+    Add-Content -Path $logFile -Value $logEntry
+}
+
+function unlockADUser {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$username
+    )
+
+    try {
+        $user = Get-ADUser -Identity $username
+        Unlock-ADAccount -Identity $user
+
+        Standard-Log -FunctionName "unlockADUser"
+    }
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Ausführen."
+        Error-Log -FunctionName "unlockADUser" -ErrorMessage $errorMessage
+    }
+    Press-AnyKey
+}
+
+function activateADUser {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$username
+    )
+
+    try {
+        $user = Get-ADUser -Identity $username
+        Enable-ADAccount -Identity $user
+        Standard-Log -FunctionName "activateADUser"
+    }
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Ausführen."
+        Error-Log -FunctionName "activateADUser" -ErrorMessage $errorMessage
+    }
+    Press-AnyKey
+}
+
+function resetADpwd {
+    param (
+        [string]$Username
+    )
+
+    try {
+	$user = Get-ADUser -Identity $username
+	Reset-ADServiceAccountPassword -Identity $user
+
+        Standard-Log -FunctionName "resetADpwd "
+    }
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Ausführen."
+        Error-Log -FunctionName "resetADpwd " -ErrorMessage $errorMessage
+    }
+}
+
+Clear-Console
