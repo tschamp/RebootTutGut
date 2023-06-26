@@ -1,8 +1,8 @@
 
 # Import config
-. .\code\config.ps1
+. ".\config.ini.ps1"
 # Import log
-. .\code\log.ps1
+. ".\log.ps1"
 
 function xmlToCsv {
     # XML auslesen
