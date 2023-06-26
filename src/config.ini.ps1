@@ -11,19 +11,19 @@
 # HashTable der Variable $config mit den Keys und Values.
 $config = @{
     mainScriptPath = "./main.ps1"
-    SchuelerXML  = "files\schueler.xml"
-    SchuelerCSV  = "files\schueler.csv"
     InitPw       = "bztf.001" | ConvertTo-SecureString -AsPlainText -Force
     OUPath       = "OU=BZTF,DC=reboottutgut,DC=local"
+    SchuelerXML  = "..\files\schueler.xml"
+    SchuelerCSV  = "..\files\schueler.csv"
     OULernende   = "Lernende"
     OUKlasse     = "Klassengruppen"
     LogFileUser  = "C:\tmp\users.log"
     LogFileGroup = "C:\tmp\groups.log"
     ClassFolder  = "C:\BZTF\Klassen"
-    AllLog       = ".\log\all.log"
-    InfoLog      = ".\log\info.log"
-    WarnLog      = ".\log\warn.log"
-    ErrorLogs     = ".\log\error.log"
+    AllLog       = "..\log\all.log"
+    InfoLog      = "..\log\info.log"
+    WarnLog      = "..\log\warn.log"
+    ErrorLogs     = "..\log\error.log"
     
     # Einzelne Skripts
     createUsers = "1\a_AD_User_erstellen.ps1"
