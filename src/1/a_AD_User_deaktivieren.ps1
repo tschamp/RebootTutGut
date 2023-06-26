@@ -1,7 +1,7 @@
 # Import config
-. .\code\config.ps1
+.\src\config.ps1
 # Import log
-. .\code\log.ps1
+.\src\log.ps1
 
 function deactivateADUserAccount {
     # Definieren von OU Pfad $fullpath
