@@ -3,7 +3,7 @@
 # Funktion des Skripts: einzelne User Verwalten im AD
 # Erstellungsdatum: 04.05.2023
 # Version: 1.2
-# Bemerkungen: funktioniert noch nicht so ganz (resetPWD)
+# Bemerkungen: funktioniert noch nicht so ganz 
 #--------------------------------------------------------------------------------
 
 Import-Module ActiveDirectory
@@ -118,7 +118,14 @@ function unlockADUser {
 
     try {
         $user = Get-ADUser -Identity $username
-        Unlock-ADAccount -Identity $user
+        if ($user) {
+            if ($user.LockedOut) {
+                Unlock-ADAccount -Identity $user
+                Write-Host "Das Konto für Benutzer $username wurde entsperrt."
+            } else {
+                Write-Host "Das Konto für Benutzer $username ist bereits entsperrt."
+            }
+        } 
 
         Standard-Log -FunctionName "unlockADUser"
     }
@@ -138,7 +145,16 @@ function activateADUser {
 
     try {
         $user = Get-ADUser -Identity $username
-        Enable-ADAccount -Identity $user
+        if ($user) {
+            if (-not $user.Enabled) {
+                Enable-ADAccount -Identity $user
+                Write-Host "Das Konto für Benutzer $username wurde aktiviert."
+            } else {
+                Write-Host "Das Konto für Benutzer $username ist bereits aktiviert."
+            }
+        } else {
+            Write-Host "Benutzer $username wurde nicht gefunden."
+        }
         Standard-Log -FunctionName "activateADUser"
     }
     catch {

@@ -11,8 +11,3 @@ Nach Abschluss der Installation können Sie die Skripts verwenden, um Benutzerin
 Beispielsweise können Sie folgendes Skript ausführen, um eine Liste aller Benutzerkonten in Ihrer Organisation anzuzeigen:
 
 
-
-DAVID PREDICTION:
-Inauen wird zustimmen das Xampp scheisse ist.
-Es wäre möglich gewesen das Victor bei der anderen Klasse mit schreibt.
-Man darf freiwillig den test wiederhollen.
