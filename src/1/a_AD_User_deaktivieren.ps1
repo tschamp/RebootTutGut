@@ -1,7 +1,15 @@
+#--------------------------------------------------------------------------------
+# Autor: David Strainovic & Timo Schreiber
+# Funktion des Skripts: Deaktivieren der AD-User
+# Erstellungsdatum: 22.06.2023
+# Version: 1.3
+# Bemerkungen: -
+#--------------------------------------------------------------------------------
+
 # Import config
-.\src\config.ps1
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "config.ini.ps1")
 # Import log
-.\src\log.ps1
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "log.ps1")
 
 function deactivateADUserAccount {
     # Definieren von OU Pfad $fullpath
@@ -48,3 +56,6 @@ function deactivateADUserAccount {
 
     }
 }
+
+
+deactivateADUserAccount

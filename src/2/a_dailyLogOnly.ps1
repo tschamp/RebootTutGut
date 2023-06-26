@@ -1,3 +1,12 @@
+#--------------------------------------------------------------------------------
+# Autor: David Strainovic & Timo Schreiber
+# Funktion des Skripts: dailyLog funktion -> NICHT DIREKT IM MENU
+# Erstellungsdatum: 22.06.2023
+# Version: 1.4
+# Bemerkungen: -
+#--------------------------------------------------------------------------------
+
+
 
 Import-Module ActiveDirectory
 

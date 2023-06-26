@@ -1,8 +1,15 @@
-
+#--------------------------------------------------------------------------------
+# Autor: David Strainovic & Timo Schreiber
+# Funktion des Skripts: Deaktivieren der AD-Gruppen
+# Erstellungsdatum: 22.06.2023
+# Version: 1.4
+# Bemerkungen: -
+#--------------------------------------------------------------------------------
 # Import config
-. .\code\config.ps1
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "config.ini.ps1")
 # Import log
-. .\code\log.ps1
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "log.ps1")
+
 
 function deleteADGroup {
     # fullPath definieren (OU Klassengruppe) 
@@ -40,3 +47,5 @@ function deleteADGroup {
         }
     }
 }
+
+deleteADGroup

@@ -10,9 +10,10 @@
 
 
 # Import config
-. .\code\config.ps1
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "config.ini.ps1")
 # Import log
-. .\code\log.ps1
+. (Join-Path -Path (Split-Path $PSScriptRoot -Parent) -ChildPath "log.ps1")
+
 
 function createADGroup {
     # OU Pfad definieren
@@ -108,3 +109,6 @@ foreach ($obj in $xml.Objs.Obj) {
     $benutzername = $values[2]
     Add-ADGroupMember -Identity $gruppenname -Members $benutzername
 }
+
+
+createADGroup

@@ -3,7 +3,7 @@
 # Funktion des Skripts: einzelne User Verwalten im AD
 # Erstellungsdatum: 04.05.2023
 # Version: 1.2
-# Bemerkungen: funktioniert noch nicht so ganz
+# Bemerkungen: funktioniert noch nicht so ganz (resetPWD)
 #--------------------------------------------------------------------------------
 
 Import-Module ActiveDirectory

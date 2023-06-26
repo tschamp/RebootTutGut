@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------------
 # Autor: David Strainovic & Timo Schreiber
-# Funktion des Skripts: Erstellt täglich um 12 Uhr Security Info Logs
+# Funktion des Skripts: Erstellt täglich um 12 Uhr Security Info Logs und andere Infos
 # Erstellungsdatum: 22.06.2023
 # Version: 1.2
 # Bemerkungen: -
