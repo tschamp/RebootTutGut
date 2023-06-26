@@ -13,8 +13,8 @@ $config = @{
     mainScriptPath = "./main.ps1"
     SchuelerXML  = "files\schueler.xml"
     SchuelerCSV  = "files\schueler.csv"
-    InitPw       = "bztf.001"
-    OUPath       = "CN=schueler,DC=reboottutgut,DC=local"
+    InitPw       = "bztf.001" | ConvertTo-SecureString -AsPlainText -Force
+    OUPath       = "OU=BZTF,DC=reboottutgut,DC=local"
     OULernende   = "Lernende"
     OUKlasse     = "Klassengruppen"
     LogFileUser  = "C:\tmp\users.log"
