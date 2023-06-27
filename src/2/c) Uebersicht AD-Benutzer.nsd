@@ -1,16 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root text="&#34;c) Uebersicht AD-Benutzer&#34;" comment="&#34;&#34;" color="ffffff" type="program" style="nice">
+<root text="&#34;c) Uebersicht AD-Benutzer&#34;" comment="" color="ffffff" type="program" style="nice">
 	<children>
-		<instruction text="&#34;Alle AD-Benutzer abrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
-		<case text="&#34;Read-Host Aktion:&#34;,&#34;1. Filtern user Passwort nicht gesetzt&#34;,&#34;2. Filtern user Passwort nie abläuft&#34;,&#34;3. Filter nach deaktivierten/gesperrten User&#34;" comment="&#34;&#34;" color="ffffff">
+		<instruction text="&#34;ActiveDirectory und Config importieren&#34;" comment="" color="ffffff" rotated="0"></instruction>
+		<instruction text="&#34;Clear-Console funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+		<instruction text="&#34;Show-MainMenu&#34;" comment="" color="ffffff" rotated="0"></instruction>
+		<case text="&#34;Auswahl&#34;,&#34;1&#34;,&#34;2&#34;,&#34;3&#34;,&#34;E&#34;,&#34;X&#34;,&#34;default&#34;" comment="" color="ffffff">
 			<qCase>
-				<instruction text="&#34;Funktion abrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Show-NoPassword Funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Alle AD-User ohne Passwort abrufen&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<alternative text="&#34;Wenn Benutzer = True (Benutzer ohne Passwort existieren)&#34;" comment="" color="ffffff">
+					<qTrue>
+						<instruction text="&#34;Write-Host alle Benutzer ohne Passwort&#34;,&#34;Grid-View&#34;" comment="" color="ffffff" rotated="0"></instruction>
+					</qTrue>
+					<qFalse>
+						<instruction text="&#34;Write-Host keine Benutzer gefunden&#34;" comment="" color="ffffff" rotated="0"></instruction>
+					</qFalse>
+				</alternative>
+				<instruction text="&#34;Standard-Log Funktion erfolgreich&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<jump text="&#34;Press-Anykey (Menu wieder anzeigen)&#34;" comment="" color="ffffff"></jump>
 			</qCase>
 			<qCase>
-				<instruction text="&#34;Funktionen abrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Show-NeverExpire Funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Alle AD-User ohne Passwortablauf abrufen&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<alternative text="&#34;Wenn Benutzer = True (Benutzer ohne Passwortablauf existieren)&#34;" comment="" color="ffffff">
+					<qTrue>
+						<instruction text="&#34;Write-Host alle Benutzer ohne Passwortablauf&#34;,&#34;Grid-View&#34;" comment="" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Standard-Log Funktion erfolgreich&#34;" comment="" color="ffffff" rotated="0"></instruction>
+					</qTrue>
+					<qFalse>
+						<instruction text="&#34;Write-Host keine Benutzer gefunden&#34;" comment="" color="ffffff" rotated="0"></instruction>
+					</qFalse>
+				</alternative>
+				<jump text="&#34;Press-Anykey (Menu wieder anzeigen)&#34;" comment="" color="ffffff"></jump>
 			</qCase>
 			<qCase>
-				<instruction text="&#34;Funktionen abrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Show-DeactivatedandLocked Funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Alle gesperrtej AD-User abrufen&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Alle deaktivierten AD-User abrufen&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;user = gesperrt und deaktivierte Benutzer&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<alternative text="&#34;Wenn Benutzer = True (gesperrte und/oder deaktivierte Benutzer existieren)&#34;" comment="" color="ffffff">
+					<qTrue>
+						<instruction text="&#34;Write-Host alle Benutzer ohne Passwortablauf&#34;,&#34;Grid-View&#34;" comment="" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Standard-Log Funktion erfolgreich&#34;" comment="" color="ffffff" rotated="0"></instruction>
+					</qTrue>
+					<qFalse>
+						<instruction text="&#34;Write-Host keine Benutzer gefunden&#34;" comment="" color="ffffff" rotated="0"></instruction>
+					</qFalse>
+				</alternative>
+				<jump text="&#34;Press-Anykey (Menu wieder anzeigen)&#34;" comment="" color="ffffff"></jump>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;wechselt zum Hauptmenü&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Main Skript&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;Programm wird beendet&#34;" comment="" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;ungueltige Eingabe&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Clear-Console funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Show-MainMenu&#34;" comment="" color="ffffff" rotated="0"></instruction>
 			</qCase>
 		</case>
 	</children>

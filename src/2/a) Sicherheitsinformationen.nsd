@@ -1,8 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root text="&#34;a) Sicherheitsinformationen&#34;" comment="&#34;&#34;" color="ffffff" type="program" style="nice">
+<root text="&#34;a) Sicherheitsinformationen&#34;" comment="" color="ffffff" type="program" style="nice">
 	<children>
-		<instruction text="&#34;AD-Benutzer abrufen&#34;" comment="" color="ffffff" rotated="0"></instruction>
-		<instruction text="&#34;Funktionen: Passwortalter, Datum letzten Anmeldung, Anzahl Logins&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
-		<instruction text="&#34;Daten als eine Logdatei abspeichern&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+		<instruction text="&#34;ActiveDirectory Module und config importieren&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+		<instruction text="&#34;Clear-Console Funktion&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+		<instruction text="&#34;Show-Main Menu funktion&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+		<case text="&#34;Aktion&#34;,&#34;1&#34;,&#34;2&#34;,&#34;3&#34;,&#34;4&#34;,&#34;E&#34;,&#34;X&#34;,&#34;default&#34;" comment="&#34;&#34;" color="ffffff">
+			<qCase>
+				<instruction text="&#34;dailyLog Funktion&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Taskname definieren&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Pfad definieren&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Trigger definieren (Uhrzeit)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Neue Task erstellen im Aufgabenplanner&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Aktion definieren : Skript dailyLogOnly ausführen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Task erstellt -&#62; Warten auf Trigger&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;C:\temp erstellen und Skript logOnly in C:\temp kopieren&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Standard-Log Funktion erfolgreich&#34;" comment="" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;manualLog Funktion&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;AD Users = alle Benutzer abrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Pfad definieren&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Aktuelles Datum für timestamp&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Titel als Überschrift (Welche daten)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<for text="&#34;für jeden Benutzer in ADUsers&#34;" comment="&#34;&#34;" color="ffffff">
+					<qFor>
+						<instruction text="&#34;Benutzername abrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Datum letztes gesetztes Passwort&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Datum letztes Anmeldung&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Anzahl Logins&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Inhalt in Logfile speichern&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+					</qFor>
+				</for>
+				<instruction text="&#34;Standard-Log Funktion erfolgreich&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;infoDailyLog Funktion&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Write-Host folgende Infos werden gepseicert&#34;,&#34;Datum des gesetzten Passwortes&#34;,&#34;Datum letzte Anmeldung&#34;,&#34;Anzahl logins&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Standard-Log Funktion erfolgreich&#34;" comment="" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;deleteLogTask Funktion&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Taskname definieren&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;existingTask ist Abfrage der Task mit dem Namen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<alternative text="&#34;Wenn existierende Task = true (existiert)&#34;" comment="&#34;&#34;" color="ffffff">
+					<qTrue>
+						<instruction text="&#34;Task löschen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+					</qTrue>
+					<qFalse>
+						<instruction text="&#34;Keine Task gefunden&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+					</qFalse>
+				</alternative>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;wechsel zum Hauptmenu&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Main Skript aufrufen&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;Programm beenden&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;ungueltige Eingabe&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Clear-Console Funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+				<instruction text="&#34;Show-Main Menu funktion&#34;" comment="" color="ffffff" rotated="0"></instruction>
+			</qCase>
+		</case>
 	</children>
 </root>
