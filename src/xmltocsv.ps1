@@ -39,3 +39,5 @@ function xmlToCsv {
     #Logging
     Write-Log -Level INFO -Message "XML zu CSV Konvertierung abgeschlossen"
 }
+
+xmlToCsv
