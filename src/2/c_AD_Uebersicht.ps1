@@ -168,32 +168,37 @@ catch {
 function Show-DeactivatedandLocked {
 
     try {
-    $lockedUsers = Search-ADAccount -LockedOut | Get-ADUser -Properties Name, SamAccountName
-    $disabledUsers = Get-ADUser -Filter {Enabled -eq $false} -Properties Name, SamAccountName
+        $lockedUsers = Search-ADAccount -LockedOut | Get-ADUser -Properties Name, SamAccountName
+        $disabledUsers = Get-ADUser -Filter {Enabled -eq $false} -Properties Name, SamAccountName
 
-    $users = $lockedUsers + $disabledUsers
+        $users = @()
 
-    if ($users) {
-        Write-Host "Gesperrte und deaktivierte Benutzer:"
-        $users | Out-GridView 
-    } else {
-        Write-Host "Keine gesperrten oder deaktivierten Benutzer gefunden."
+        if ($lockedUsers) {
+            $users += $lockedUsers
+        }
 
+        if ($disabledUsers) {
+            $users += $disabledUsers
+        }
+
+        if ($users) {
+            Write-Host "Gesperrte und deaktivierte Benutzer:"
+            $users | Out-GridView 
+        } else {
+            Write-Host "Keine gesperrten oder deaktivierten Benutzer gefunden."
+        }
+
+        Standard-Log -FunctionName "Show-DeactivatedandLocked"
     }
-    Standard-Log -FunctionName "Show-DeactivatedandLocked"
+    catch {
+        $errorMessage = $_.Exception.Message
+        Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
+        Error-Log -FunctionName "Show-DeactivatedandLocked" -ErrorMessage $errorMessage
+    }
 
-
-}
-
-catch {
-    $errorMessage = $_.Exception.Message
-    Write-Host "Es gab einen Fehler beim Ausführen: $errorMessage"
-    Error-Log -FunctionName "Show-DeactivatedandLocked" -ErrorMessage $errorMessage
-
-}
     Press-AnyKey
-
 }
+
 
 
 
