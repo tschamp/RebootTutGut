@@ -30,6 +30,7 @@ $config = @{
     deactivateUsers = "1\a_AD_User_deaktivieren.ps1"
     createGroups = "1\b_AD_Gruppen_erstellen.ps1"
     deactivateGroups = "1\b_AD_Gruppen_deaktivieren.ps1"
+    xmlToCsv = "xmltocsv.ps1"
 
     securityLogs = "2\a_Sicherheitstechnische_Infos.ps1"
     manualLogPath = "..\logs\manual.log"
