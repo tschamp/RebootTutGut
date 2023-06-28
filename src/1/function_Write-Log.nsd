@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:nsd="https://structorizer.fisch.lu" version="3.32-07" preRepeat="until " postFor="to" preReturn="return" postForIn="in" preWhile="while " output="OUTPUT" input="INPUT" preFor="for" preExit="exit" preLeave="leave" ignoreCase="true" preThrow="throw" preForIn="foreach" stepFor="by" namespace="" author="21r6929" created="2022-06-22" changedby="21r6929" changed="2022-06-22" origin="Structorizer 3.32-07" text="&#34;function Write-Log&#34;" comment="&#34;&#34;" color="ffffff" type="program" style="nice">
+	<children>
+		<for text="&#34;param&#34;" comment="&#34;&#34;" counterVar="dummy_counter" startValue="param" stepConst="1" style="FREETEXT" color="ffffff" disabled="0">
+			<qFor>
+				<instruction text="&#34;[String] $level = (&#34;&#34;INFO&#34;&#34;, &#34;&#34;WARN&#34;&#34;, &#34;&#34;ERROR&#34;&#34;)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+				<instruction text="&#34;[String] $Message = (Mandatory = $true)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+			</qFor>
+		</for>
+		<instruction text="&#34;$Level = ($level Grossbuchstaben)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;$stamp = (Date + Time)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;$line = &#34;&#34;[$stamp] [$Level] - $Message&#34;&#34;&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;New-Item log&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;New-Item &#34;&#34;.\log\all.log&#34;&#34;&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;New-Item &#34;&#34;.\log\info.log&#34;&#34;&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;New-Item &#34;&#34;.\log\warn.log&#34;&#34;&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;New-Item &#34;&#34;.\log\error.log&#34;&#34;&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Add-Content &#34;&#34;.\log\all.log&#34;&#34; -value $line&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Write-Host $Message&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<case text="&#34;$level&#34;,&#34;INFO&#34;,&#34;WARN&#34;,&#34;ERROR&#34;,&#34;%&#34;" comment="&#34;&#34;" color="ffffff" disabled="0">
+			<qCase>
+				<instruction text="&#34;Add-Content &#34;&#34;.\log\info.log&#34;&#34; -value $line&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;Add-Content &#34;&#34;.\log\warn.log&#34;&#34; -value $line&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+			</qCase>
+			<qCase>
+				<instruction text="&#34;Add-Content &#34;&#34;.\log\error.log&#34;&#34; -value $line&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+			</qCase>
+			<qCase color="ffffff">
+			</qCase>
+		</case>
+	</children>
+</root>
