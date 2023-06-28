@@ -167,20 +167,38 @@ function activateADUser {
 
 function resetADpwd {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$Username
     )
 
     try {
-	$user = Get-ADUser -Identity $username
-	Reset-ADServiceAccountPassword -Identity $user
+	    $user = Get-ADUser -Identity $Username
 
-        Standard-Log -FunctionName "resetADpwd "
+        do {
+            $newPassword = Read-Host "Gib das neue Passwort ein" -AsSecureString
+            $confirmPassword = Read-Host "Bestätige das neue Passwort" -AsSecureString
+            
+            # Passwort überprüfen ob sie richtig sind
+            $newPasswordText = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($newPassword))
+            $confirmPasswordText = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($confirmPassword))
+
+            $passwordMatch = $newPasswordText -eq $confirmPasswordText
+            
+            if (-not $passwordMatch) {
+                Write-Host "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
+            }
+            Set-ADAccountPassword -Identity $user -NewPassword $newPassword
+            Write-Host "Das Passwort für Benutzer '$user' wurde erfolgreich geändert."
+        } while (-not $passwordMatch)
+
+        Standard-Log -FunctionName "resetADpwd"
     }
     catch {
         $errorMessage = $_.Exception.Message
         Write-Host "Es gab einen Fehler beim Ausführen."
-        Error-Log -FunctionName "resetADpwd " -ErrorMessage $errorMessage
+        Error-Log -FunctionName "resetADpwd" -ErrorMessage $errorMessage
     }
 }
+
 
 Clear-Console
