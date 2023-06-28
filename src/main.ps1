@@ -72,19 +72,19 @@ function Show-GroupFunctionsMenu {
     switch ($decision) {
         '1' {
             Write-Host "Option Alle Accounts mit XML erstellen wurde gewählt"
-            AD-User-Erstellen
+            xmlToCsv AD-User-Erstellen
         }
         '2' {
             Write-Host "Option Alle Accounts mit XML deaktivieren wurde gewählt"
-            AD-User-Deaktivieren
+            xmlToCsv AD-User-Deaktivieren
         }
         '3' {
             Write-Host "Option Gruppen erstellen mit XML wurde gewählt"
-            AD-Gruppen-Erstellen assignADUserToADGroup
+            xmlToCsv AD-Gruppen-Erstellen assignADUserToADGroup
         }
         '4' {
             Write-Host "Option Gruppen deaktivieren mit XML wurde gewählt"
-            AD-Gruppen-Deaktivieren assignADUserToADGroup
+            xmlToCsv AD-Gruppen-Deaktivieren assignADUserToADGroup
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
