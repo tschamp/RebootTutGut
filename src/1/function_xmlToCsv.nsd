@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:nsd="https://structorizer.fisch.lu" version="3.32-07" preRepeat="until " postFor="to" preReturn="return" postForIn="in" preWhile="while " output="OUTPUT" input="INPUT" preFor="for" preExit="exit" preLeave="leave" ignoreCase="true" preThrow="throw" preForIn="foreach" stepFor="by" namespace="" author="21r6929" created="2022-06-22" changedby="21r6929" changed="2022-06-22" origin="Structorizer 3.32-07" text="&#34;function xmlToCsv&#34;" comment="&#34;&#34;" color="ffffff" type="program" style="nice">
+	<children>
+		<instruction text="&#34;$SchuelerXML = Get-Content XML&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;Out-File -FilePath CSV (CSV-Header)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<instruction text="&#34;$total  = 0&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<for text="&#34;foreach $line in XML&#34;" comment="&#34;&#34;" counterVar="$line" startValue="" stepConst="" style="TRAVERSAL" insep="in" color="ffffff" disabled="0">
+			<qFor>
+				<instruction text="&#34;$total += 1&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+			</qFor>
+		</for>
+		<instruction text="&#34;$current = 1&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+		<for text="&#34;foreach $line in XML&#34;" comment="&#34;&#34;" counterVar="$line" startValue="" stepConst="" style="TRAVERSAL" insep="in" color="ffffff" disabled="0">
+			<qFor>
+				<instruction text="&#34;$line -ireplace (Umlaute)&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+				<instruction text="&#34;$line | Out-File -FilePath CSV&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+				<instruction text="&#34;$current += 1&#34;" comment="&#34;&#34;" color="ffffff" rotated="0" disabled="0"></instruction>
+			</qFor>
+		</for>
+	</children>
+</root>
