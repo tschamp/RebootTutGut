@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root text="&#34;Main&#34;" comment="&#34;&#34;" color="ffffff" type="program" style="nice">
+<root text="&#34;Main&#34;" comment="" color="ffffff" type="program" style="nice">
 	<children>
 		<instruction text="&#34;config importieren&#34;" comment="" color="ffffff" rotated="0"></instruction>
 		<instruction text="&#34;Funktion Clear-Console:&#34;,&#34;Clear-Host&#34;,&#34;ruft Funktion Show-MainMenu auf&#34;" comment="" color="ffffff" rotated="0"></instruction>
@@ -32,7 +32,7 @@
 			</qCase>
 			<qCase>
 				<instruction text="&#34;Funktion: Show-UserFunctionsMenu&#34;" comment="" color="ffffff" rotated="0"></instruction>
-				<case text="&#34;Aktion&#34;,&#34;1&#34;,&#34;2&#34;,&#34;3&#34;,&#34;E&#34;,&#34;X&#34;,&#34;default&#34;" comment="&#34;&#34;" color="ffffff">
+				<case text="&#34;Aktion&#34;,&#34;1&#34;,&#34;2&#34;,&#34;3&#34;,&#34;E&#34;,&#34;X&#34;,&#34;default&#34;" comment="" color="ffffff">
 					<qCase>
 						<instruction text="&#34;Funktion: AD-Accounts mit XML erstellen&#34;,&#34;ruft das dazugehörige Skript auf&#34;" comment="" color="ffffff" rotated="0"></instruction>
 					</qCase>
@@ -40,7 +40,7 @@
 						<instruction text="&#34;Funktion: Sicherheitsfunktionen (Logs der AD Benutzer)&#34;,&#34;ruft das dazugehörige Skript auf&#34;" comment="" color="ffffff" rotated="0"></instruction>
 					</qCase>
 					<qCase>
-						<instruction text="&#34;Funktion: Einzelne Benutzerverwaltung&#34;,&#34;ruft das dazugehörige Skript auf&#34;" comment="&#34;&#34;" color="ffffff" rotated="0"></instruction>
+						<instruction text="&#34;Funktion: Einzelne Benutzerverwaltung&#34;,&#34;ruft das dazugehörige Skript auf&#34;" comment="" color="ffffff" rotated="0"></instruction>
 					</qCase>
 					<qCase>
 						<instruction text="&#34;Write-Host Wechselt zum Hauptmenu&#34;,&#34;ruft Funktion Clear-Console auf -&#62; MainMenu&#34;" comment="" color="ffffff" rotated="0"></instruction>
