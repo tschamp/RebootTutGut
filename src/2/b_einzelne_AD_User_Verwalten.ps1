@@ -174,7 +174,6 @@ function resetADpwd {
     try {
 	    $user = Get-ADUser -Identity $Username
 
-        do {
             $newPassword = Read-Host "Gib das neue Passwort ein" -AsSecureString
             $confirmPassword = Read-Host "Bestätige das neue Passwort" -AsSecureString
             
@@ -186,11 +185,10 @@ function resetADpwd {
             
             if (-not $passwordMatch) {
                 Write-Host "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
-                break
+                Press-AnyKey
             }
             Set-ADAccountPassword -Identity $user -NewPassword $newPassword
             Write-Host "Das Passwort für Benutzer '$user' wurde erfolgreich geändert."
-        } while (-not $passwordMatch)
 
         Standard-Log -FunctionName "resetADpwd"
     }
