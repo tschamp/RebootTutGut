@@ -76,15 +76,15 @@ function Show-GroupFunctionsMenu {
         }
         '2' {
             Write-Host "Option Alle Accounts mit XML deaktivieren wurde gewählt"
-            xmlToCsv AD-User-Deaktivieren
+            AD-User-Deaktivieren
         }
         '3' {
             Write-Host "Option Gruppen erstellen mit XML wurde gewählt"
             xmlToCsv AD-Gruppen-Erstellen assignADUserToADGroup
         }
-        '4' {
+        '4' {AD-Gruppen-Deaktivieren
             Write-Host "Option Gruppen deaktivieren mit XML wurde gewählt"
-            xmlToCsv AD-Gruppen-Deaktivieren assignADUserToADGroup
+            AD-Gruppen-Deaktivieren assignADUserToADGroup
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
@@ -183,6 +183,11 @@ function AD-User-Verwaltung {
 function AD-User-Uebersicht {
     Write-Host "Rufe das AD-User-Uebersichtskript auf..."
     . "$($config["overviewUser"])"
+}
+
+function xmlToCsv {
+    Write-Host "Die CSV Datei wird erstellt"
+    . "$($config["xmlToCsv"])"
 }
 ## ruft die funktion konsole aus, in dieser wird dann das main menu ausgerufen und so weiter dies das ananas
 Clear-Console

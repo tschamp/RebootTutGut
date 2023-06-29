@@ -13,7 +13,7 @@
 
 function deleteADGroup {
     # fullPath definieren (OU Klassengruppe) 
-    $fullPath = $config.OUKlasse + "," + $config.OUPath
+    $fullPath = $($config["OUKlasse"]) + "," + $($config["OUPath"])
     # Für jede Gruppe in $fullPath (OU Klassenablage)
     foreach ($group in ((Get-ADGroup -Filter "*" -SearchBase $fullPath).Name)) {
         # $groupExists auf $false setzen

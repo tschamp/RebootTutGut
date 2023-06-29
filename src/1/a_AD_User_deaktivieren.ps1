@@ -15,7 +15,7 @@ function deactivateADUserAccount {
     # Definieren von OU Pfad $fullpath
     $fullPath = $($config["OULernende"]) + "," + $($config["OUPath"])
     # Foreach $user in $fullPath (OU Lernende)
-    foreach ($user in ((Get-ADUser -Filter "*" -SearchBase $fullPath).SamAccountName)) {
+    foreach ($user in ((Get-ADUser -Filter "*" -SearchBase $fullPath))) {
         # $userExists auf $false setzen (Default)
         $userExists = $false
 
