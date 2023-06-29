@@ -63,6 +63,7 @@ function Show-GroupFunctionsMenu {
 [2] Alle AD-Accounts mit XML deaktivieren
 [3] Erstellen der dazugehörigen Gruppen
 [4] Löschen der dazugehörigen Gruppen
+[5] XML zu CSV konvertieren
 [E] Zum Hauptmenu
 [X] Programm beenden
 
@@ -72,7 +73,7 @@ function Show-GroupFunctionsMenu {
     switch ($decision) {
         '1' {
             Write-Host "Option Alle Accounts mit XML erstellen wurde gewählt"
-            xmlToCsv AD-User-Erstellen
+            AD-User-Erstellen
         }
         '2' {
             Write-Host "Option Alle Accounts mit XML deaktivieren wurde gewählt"
@@ -80,11 +81,15 @@ function Show-GroupFunctionsMenu {
         }
         '3' {
             Write-Host "Option Gruppen erstellen mit XML wurde gewählt"
-            xmlToCsv AD-Gruppen-Erstellen assignADUserToADGroup
+            AD-Gruppen-Erstellen assignADUserToADGroup
         }
         '4' {AD-Gruppen-Deaktivieren
             Write-Host "Option Gruppen deaktivieren mit XML wurde gewählt"
-            AD-Gruppen-Deaktivieren assignADUserToADGroup
+            AD-Gruppen-Deaktivieren
+        }
+        '5' {
+            Write-Host "Option XML zu CSV konfertieren wurde gewählt"
+            xmlToCsv
         }
         'E' {
             $Host.UI.RawUI.ForegroundColor = "Yellow"
